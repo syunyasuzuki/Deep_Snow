@@ -71,8 +71,50 @@ public class MapCreate : EditorWindow
         outputFileName = EditorGUILayout.TextField(outputFileName);
         GUILayout.EndHorizontal();
         EditorGUILayout.Space();
+
+        DrowImageParts();
+
+        DrowSelectedImage();
+
+        DrawMapWindowButton();
+    }
+
+    private void DrawImageParts()
+    {
+        //画像が入っているとき
+        if(imgDirectory!=null)
+        {
+            float x = 0.0f;
+            float y = 00.0f;
+            float w = 50.0f;
+            float h = 50.0f;
+            float maxW = 300.0f;
+
+            //画像のパスを取得
+            string path = AssetDatabase.GetAssetPath(imgDirectory);
+            //指定したディレクトリ内の指定した検索パターンに一致するファイル名 (パスを含む) を返す
+            string[] names = Directory.GetFiles(path, "*.png");
+            EditorGUILayout.BeginVertical();
+            //配列やListの要素にアクセスするループ処理
+            foreach(string d in names)
+            {
+                if(x>maxW)
+                {
+                    x = 0.0f;
+                    y += h;
+                    EditorGUILayout.EndHorizontal();
+                }
+                if(x==0.0f)
+                {
+                    EditorGUILayout.BeginHorizontal();
+                }
+                GUILayout.FlexibleSpace();
+            }
+        }
     }
 }
+
+
 
 //サブウィンドウの作成
 public class MapCreateSubWindow:EditorWindow
