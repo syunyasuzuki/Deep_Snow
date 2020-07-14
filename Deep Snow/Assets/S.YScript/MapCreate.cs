@@ -72,11 +72,11 @@ public class MapCreate : EditorWindow
         GUILayout.EndHorizontal();
         EditorGUILayout.Space();
 
-        DrowImageParts();
+        //DrowImageParts();
 
-        DrowSelectedImage();
+        //DrowSelectedImage();
 
-        DrawMapWindowButton();
+        //DrawMapWindowButton();
     }
 
     private void DrawImageParts()
@@ -109,6 +109,7 @@ public class MapCreate : EditorWindow
                     EditorGUILayout.BeginHorizontal();
                 }
                 GUILayout.FlexibleSpace();
+                Texture2D tex = (Texture2D)AssetDatabase.LoadAssetAtPath(d, typeof(Texture2D));
             }
         }
     }
