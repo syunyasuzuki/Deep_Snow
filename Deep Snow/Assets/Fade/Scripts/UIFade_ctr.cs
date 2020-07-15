@@ -17,7 +17,11 @@ public class UIFade_ctr : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            fade.FadeOut(1.5f);
+            fade.FadeOut(1.0f);
+        }
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            fade.FadeIn(1.0f);
         }
     }
 }
