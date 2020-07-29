@@ -4,49 +4,56 @@ using UnityEngine;
 
 public class PlayerCon : MonoBehaviour
 {
-    enum MotionIndex
-    {
-        Stay,
-        Walk,
-        jump,
-    }
-    MotionIndex m_motionIndex = MotionIndex.Stay;
-
-    private Rigidbody2D rigid2D;
+    // Start is called before the first frame update   
+    Rigidbody2D rig2D;
     Animator animator;
-    public float speed; 
+    public float Jump;
+    public float walk;
+    float maxspeed = 2.0f;
 
-    // Use this for initialization
     void Start()
-    { 
-        rigid2D = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-        
-        
+    {
+        this.rig2D = GetComponent<Rigidbody2D>();
+        this.animator = GetComponent<Animator>();
     }
+
     // Update is called once per frame
     void Update()
     {
-        m_motionIndex = MotionIndex.Stay;
-        switch (m_motionIndex)
+        //ジャンプ
+        if (Input.GetKeyDown(KeyCode.Space) && this.rig2D.velocity.y == 0)
         {
-            case MotionIndex.Walk:
-            case MotionIndex.jump:
-
-                break;
+            this.rig2D.AddForce(transform.up * this.Jump);
+        }
+        //左右移動
+        int key = 0;
+        if (Input.GetKey(KeyCode.A))//左
+        {
+            key = -1;
+        }
+        else if (Input.GetKey(KeyCode.D))//右
+        {
+            key = 1;
+        }
+        if (Input.GetKeyUp(KeyCode.A)||Input.GetKeyUp(KeyCode.D))
+        {
+            rig2D.velocity = Vector3.zero;          
         }
 
-        animator.SetInteger("MotionIndex", (int)MotionIndex.Stay);
-        if (Input.GetKey(KeyCode.D))
+        //プレイヤー速度
+        float speedx = Mathf.Abs(this.rig2D.velocity.x);
+
+        //スピード制限
+        if(speedx < this.maxspeed)
         {
-            transform.position += transform.right * speed * Time.deltaTime;
-            animator.SetInteger("MontionIndex", (int)MotionIndex.Walk);
+            this.rig2D.AddForce(transform.right * key * this.walk);
         }
-        else if (Input.GetKey(KeyCode.A))
+        //反転
+        if (key != 0)
         {
-            transform.position -= transform.right * speed * Time.deltaTime;
-            animator.SetInteger("MontionIndex", (int)MotionIndex.Walk);
+            transform.localScale = new Vector3(key, 1, 1);
         }
+        this.animator.speed = speedx / 2.0f;
     }
-}
 
+}
