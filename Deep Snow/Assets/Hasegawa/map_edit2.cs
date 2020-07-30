@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System;
 
-public class map_edit : MonoBehaviour{
+public class map_edit2 : MonoBehaviour{
 
     //フォルダへのパス
     string fopath;
