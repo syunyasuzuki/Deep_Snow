@@ -5,7 +5,7 @@ using System.IO;
 using System.Text;
 using System;
 
-public class map_edit : MonoBehaviour {
+public class map_edit : MonoBehaviour{
 
     //フォルダへのパス
     string fopath;
@@ -13,7 +13,7 @@ public class map_edit : MonoBehaviour {
     string fipath;
     //フォルダとファイルへのパスを設定
     void Set_path(){
-        fopath = Application.dataPath + @"\Gamedata";
+        fopath = Application.dataPath + @"\Resources";
         fipath = Path.Combine(fopath, "mapdata.txt");
     }
     //フォルダーとファイルが存在するか確認する、存在しない場合作成する
@@ -67,6 +67,15 @@ public class map_edit : MonoBehaviour {
         maincam = GetComponent<Camera>();
         camera_z = transform.position.z;
     }
+    //マップの大きさが変わった際などにカメラの位置を最適化する
+    void Set_camerasize(int x, int y){
+        float camera_x = (x - 1) / 2.0f;
+        float camera_y = (y - 1) / 2.0f * -1;
+        int min = Mathf.Min(x, y);
+        float camera_size = min / 2.0f;
+        maincam.transform.position = new Vector3(camera_x, camera_y, camera_z);
+        maincam.orthographicSize = camera_size;
+    }
     //カメラの引き具合
     float Move_camera_size = 1.0f;
     //カメラの移動速度
@@ -82,6 +91,13 @@ public class map_edit : MonoBehaviour {
         if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow)) { y += 1; }
         if (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow)) { y -= 1; }
         transform.position = new Vector3(transform.position.x + Move_camera_xy * x, transform.position.y + Move_camera_xy * y, transform.position.z);
+    }
+    //ライトを作成する
+    void Create_light(){
+        GameObject light = new GameObject("light");
+        light.AddComponent<Light>();
+        Light lht = light.GetComponent<Light>();
+        lht.type = LightType.Directional;
     }
 
     //カーソルの補助
@@ -127,8 +143,8 @@ public class map_edit : MonoBehaviour {
     }
     //読み込んだデータから空白を消す
     void Clear_readdata(){
-        for(int i = 0; i < all_data.Length; i++){
-            while(all_data[i].Substring(0,1)==" "){
+        for (int i = 0; i < all_data.Length; i++){
+            while (all_data[i].Substring(0, 1) == " "){
                 all_data[i] = all_data[i].Substring(1);
             }
         }
@@ -137,30 +153,30 @@ public class map_edit : MonoBehaviour {
     void Read_L_size(int n){
         string[] sub_x = all_data[1].Split(',');
         string[] sub_y = all_data[2].Split(',');
-        for(int i = 0; i < n; i++){
+        for (int i = 0; i < n; i++){
             L_x[i] = int.Parse(sub_x[i]);
             L_y[i] = int.Parse(sub_y[i]);
         }
     }
     //マップ本体を配列に変換する
     void Read_M_line(int n){
-        for(int i = 0; i < n; i++){
+        for (int i = 0; i < n; i++){
             //変換するためのデータを入れるとこ
             string[] str1 = new string[Maxsize_y];
-            for(int lu = 0; lu < L_y[i]; lu++){
-                str1[lu] = all_data[5 + lu + (50 + 2)*i];
+            for (int lu = 0; lu < L_y[i]; lu++){
+                str1[lu] = all_data[5 + lu + (50 + 2) * i];
                 //必要部分だけを抜き取る
                 string str2 = str1[lu].Substring(1, str1[lu].Length - 3);
                 //文字列をばらして配列に入れる
                 string[] str3 = str2.Split(',');
                 //文字列をint型に変換してマップに書き込み
-                for(int na = 0; na < L_x[i]; na++){
+                for (int na = 0; na < L_x[i]; na++){
                     map[i, lu, na] = int.Parse(str3[na]);
                 }
             }
         }
     }
-    
+
     //デバッグ用
     void Debug_mapdata(){
         //マップの最大サイズを表示
@@ -168,18 +184,18 @@ public class map_edit : MonoBehaviour {
         //保存されているマップの数を表示
         Debug.Log("map_n:" + map_n);
         //保存されているマップのマップ番号と各大きさとマップを表示
-        for(int i = 0; i < map_n; i++){
-            Debug.Log("No."+i+"　L_x[" + i + "]:" + L_x[i] + "　L_y[" + i + "]:" + L_y[i]);
+        for (int i = 0; i < map_n; i++){
+            Debug.Log("No." + i + "　L_x[" + i + "]:" + L_x[i] + "　L_y[" + i + "]:" + L_y[i]);
             for (int lu = 0; lu < L_y[i]; lu++){
                 string str1 = "";
-                for(int na = 0; na < L_x[i]; na++){
+                for (int na = 0; na < L_x[i]; na++){
                     str1 = str1 + " " + map[i, lu, na];
                 }
                 Debug.Log(str1);
             }
         }
     }
-    
+
     //ファイルがなかった時の初期設定
     void Setup_firstmapdata(){
         map_num = 0;
@@ -209,7 +225,7 @@ public class map_edit : MonoBehaviour {
         loof.transform.position = new Vector3(w_pos, 0.7f, 0);
         GameObject floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
         floor.transform.localScale = new Vector3(w_size, def_hw, 1);
-        floor.transform.position = new Vector3(w_pos, -L_y[map_num]+0.3f, 0);
+        floor.transform.position = new Vector3(w_pos, -L_y[map_num] + 0.3f, 0);
         int h_size = L_y[map_num];
         float h_pos = (L_y[map_num] - 1) / 2.0f * -1;
         GameObject left = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -217,7 +233,7 @@ public class map_edit : MonoBehaviour {
         left.transform.position = new Vector3(-0.7f, h_pos, 0);
         GameObject right = GameObject.CreatePrimitive(PrimitiveType.Cube);
         right.transform.localScale = new Vector3(def_hw, h_size, 1);
-        right.transform.position = new Vector3(L_x[map_num]-0.3f, h_pos, 0);
+        right.transform.position = new Vector3(L_x[map_num] - 0.3f, h_pos, 0);
         loof.transform.parent = mapgr.transform;
         floor.transform.parent = mapgr.transform;
         left.transform.parent = mapgr.transform;
@@ -227,9 +243,9 @@ public class map_edit : MonoBehaviour {
     void Create_Map(){
         Create_Mapgrid();
         GameObject mapmother = new GameObject("mapchip");
-        for(int i = 0; i < L_y[map_num]; i++){
-            for(int lu = 0; lu < L_x[map_num]; lu++){
-                if(map[map_num, i, lu] == 1){
+        for (int i = 0; i < L_y[map_num]; i++){
+            for (int lu = 0; lu < L_x[map_num]; lu++){
+                if (map[map_num, i, lu] == 1){
                     GameObject subgo = GameObject.CreatePrimitive(PrimitiveType.Cube);
                     subgo.transform.position = new Vector3(lu, -i, 0);
                     subgo.name = "chip_" + i + "_" + lu;
@@ -247,7 +263,7 @@ public class map_edit : MonoBehaviour {
     }
     //ファイルを一括で読み込む
     void Read_data(){
-        all_data = File.ReadAllLines(fipath,Encoding.GetEncoding("Shift_JIS"));
+        all_data = File.ReadAllLines(fipath, Encoding.GetEncoding("Shift_JIS"));
         Debug.Log(all_data.Length);
         if (all_data.Length != 0){
             Debug.Log("読み込み完了");
@@ -255,6 +271,7 @@ public class map_edit : MonoBehaviour {
             Set_mapdata();
             Debug_mapdata();
             Create_Map();
+            Set_camerasize(L_x[map_num], L_y[map_num]);
         }
         else{
             Debug.Log("マップデータが存在しません");
@@ -286,12 +303,12 @@ public class map_edit : MonoBehaviour {
         Debug.Log(str_x + "　" + str_y);
         //マップ情報を確定
         write_str[3] = "    int[,,] map = new int[,,]{";
-        for(int i = 0; i < map_n; i++){
+        for (int i = 0; i < map_n; i++){
             int subint = 4 + (Maxsize_y + 2) * i;
             write_str[subint] = "        {";
-            for(int lu = 0; lu < Maxsize_y; lu++){
+            for (int lu = 0; lu < Maxsize_y; lu++){
                 string sub_x = "";
-                for(int na = 0; na < Maxsize_x; na++){
+                for (int na = 0; na < Maxsize_x; na++){
                     sub_x = sub_x + map[i, lu, na] + ",";
                 }
                 sub_x = sub_x.Substring(0, sub_x.Length - 1);
@@ -331,10 +348,10 @@ public class map_edit : MonoBehaviour {
         Debug.Log(max_text_num + " " + max_text_size_x + " " + max_text_size_y);
     }
     //入力処理を書き換え
-    void Set_text_num(int n, int x, int y) {
-        text_num = ""+n;
-        text_size_x = ""+x;
-        text_size_y = ""+y;
+    void Set_text_num(int n, int x, int y){
+        text_num = "" + n;
+        text_size_x = "" + x;
+        text_size_y = "" + y;
     }
     //入力処理の確定
     void Set_text_num(){
@@ -371,13 +388,13 @@ public class map_edit : MonoBehaviour {
             //マップの拡張または縮小を行う
             map_num = sub_n;
             int[,] sub_map = new int[sub_y, sub_x];
-            for(int i = 0; i < sub_y; i++){
-                for(int lu = 0; lu < sub_x; lu++){
+            for (int i = 0; i < sub_y; i++){
+                for (int lu = 0; lu < sub_x; lu++){
                     sub_map[i, lu] = map[map_num, i, lu];
                 }
             }
-            for(int i = 0; i < L_y[map_num]; i++){
-                for(int lu = 0; lu < L_x[map_num]; lu++){
+            for (int i = 0; i < L_y[map_num]; i++){
+                for (int lu = 0; lu < L_x[map_num]; lu++){
                     map[map_num, i, lu] = 0;
                 }
             }
@@ -390,6 +407,7 @@ public class map_edit : MonoBehaviour {
             }
             Delete_Map();
             Create_Map();
+            Set_camerasize(L_x[map_num], L_y[map_num]);
         }
         //違うマップの場合
         else{
@@ -427,18 +445,18 @@ public class map_edit : MonoBehaviour {
         GUIStyle Set_text = GUI.skin.label;
         Set_text.fontSize = Def_fontsize;
         //テキストUIを表示
-        GUI.Label(new Rect(20, 20, 250, 40), "現在のマップ："+map_num+"　大きさ（"+L_x[map_num]+" ,"+L_y[map_num]+" ）");
+        GUI.Label(new Rect(20, 20, 250, 40), "現在のマップ：" + map_num + "　大きさ（" + L_x[map_num] + " ," + L_y[map_num] + " ）");
         GUI.Label(new Rect(50, 50, 250, 40), "N　　　X　　　Y");
-        GUI.Label(new Rect(px+(50*px_num), 10, 100, 100), " 選択中\nブロック\n　 ▼",Set_text);
+        GUI.Label(new Rect(px + (50 * px_num), 10, 100, 100), " 選択中\nブロック\n　 ▼", Set_text);
         //ボタンの設定を作成する
         GUIStyle Set_button = GUI.skin.button;
         Set_button.fontSize = Def_fontsize;
         Set_button.normal.textColor = Color.white;
         //ボタンを表示する
-        if(GUI.Button(new Rect(200, 70, 40, 40), "決定")){
+        if (GUI.Button(new Rect(200, 70, 40, 40), "決定")){
             Set_text_num();
         }
-        if(GUI.Button(new Rect(250, 70, 40, 40), "書出")){
+        if (GUI.Button(new Rect(250, 70, 40, 40), "書出")){
             Write_all_data();
         }
         Set_button.fontSize = Max_fontsize;
@@ -462,15 +480,16 @@ public class map_edit : MonoBehaviour {
     void Awake(){
         Set_path();
         Folder_file_check_andCreate();
+        Create_light();
+        Set_camera_z();
         First_setting();
         Read_data();
         GUI_setting();
         Set_text_num(map_num, L_x[0], L_y[0]);
-        Set_camera_z();
         Create_mouse_point();
     }
-	void Start () {
-	}
+    void Start(){
+    }
 
     //マウスの処理
     void Mouse_task(){
@@ -508,9 +527,9 @@ public class map_edit : MonoBehaviour {
             }
         }
     }
-    
-	void Update () {
+
+    void Update(){
         Mouse_task();
         Set_camera();
-	}
+    }
 }
