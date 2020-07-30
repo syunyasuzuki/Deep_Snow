@@ -79,10 +79,11 @@ public class MapCreate : EditorWindow
         //DrawMapWindowButton();
     }
 
+    //画像一覧をボタン選択できる形にして出力
     private void DrawImageParts()
     {
         //画像が入っているとき
-        if(imgDirectory!=null)
+        if (imgDirectory != null)
         {
             float x = 0.0f;
             float y = 00.0f;
@@ -96,21 +97,28 @@ public class MapCreate : EditorWindow
             string[] names = Directory.GetFiles(path, "*.png");
             EditorGUILayout.BeginVertical();
             //配列やListの要素にアクセスするループ処理
-            foreach(string d in names)
+            foreach (string d in names)
             {
-                if(x>maxW)
+                if (x > maxW)
                 {
                     x = 0.0f;
                     y += h;
                     EditorGUILayout.EndHorizontal();
                 }
-                if(x==0.0f)
+                if (x == 0.0f)
                 {
                     EditorGUILayout.BeginHorizontal();
                 }
                 GUILayout.FlexibleSpace();
                 Texture2D tex = (Texture2D)AssetDatabase.LoadAssetAtPath(d, typeof(Texture2D));
+                if (GUILayout.Button(tex, GUILayout.MaxWidth(w), GUILayout.MaxHeight(h), GUILayout.ExpandWidth(false), GUILayout.ExpandHeight(false)))
+                {
+                    selectedImagePath = d;
+                }
+                GUILayout.FlexibleSpace();
+                x += w;
             }
+            EditorGUILayout.EndVertical();
         }
     }
 }
@@ -118,7 +126,7 @@ public class MapCreate : EditorWindow
 
 
 //サブウィンドウの作成
-public class MapCreateSubWindow:EditorWindow
+public class MapCreateSubWindow : EditorWindow
 {
 
 }

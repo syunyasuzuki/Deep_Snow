@@ -7,6 +7,7 @@ using System;
 
 public class map_edit : MonoBehaviour
 {
+    [SerializeField] GameObject bc1;
 
     //フォルダへのパス
     string fopath;
@@ -16,7 +17,7 @@ public class map_edit : MonoBehaviour
     void Set_path()
     {
         //Assetにいくために＠が必要
-        fopath = Application.dataPath + @"\Gamedata";
+        fopath = Application.dataPath + @"\Resources";
         fipath = Path.Combine(fopath, "mapdata.txt");
     }
     //フォルダーとファイルが存在するか確認する、存在しない場合作成する
@@ -588,18 +589,25 @@ public class map_edit : MonoBehaviour
                             map[map_num, (int)-sub32.y, (int)sub32.x] = 0;
                             break;
                         case 1:
-                            GameObject subgo1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                            subgo1.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
-                            subgo1.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
-                            subgo1.transform.parent = mother.transform;
-                            map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+                            if (!GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x))
+                            {
+                                GameObject subgo1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                                subgo1.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                subgo1.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                subgo1.transform.parent = mother.transform;
+                                map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+                            }
+                           
                             break;
                         case 2:
-                            GameObject subgo2 = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                            subgo2.name = "chip_" + (int)-sub32.y + "" + (int)sub32.x;
-                            subgo2.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
-                            subgo2.transform.parent = mother.transform;
-                            map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+                            if (!GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x))
+                            {
+                                GameObject subgo2 = Instantiate(bc1) as GameObject;
+                                subgo2.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                subgo2.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                subgo2.transform.parent = mother.transform;
+                                map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+                            }
                             break;
                     }
                 }
