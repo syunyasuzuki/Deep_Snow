@@ -8,6 +8,9 @@ using System;
 public class map_edit : MonoBehaviour
 {
     [SerializeField] GameObject bc1;
+    [SerializeField] GameObject bc2;
+    [SerializeField] GameObject bc3;
+    [SerializeField] GameObject bc4;
 
     //フォルダへのパス
     string fopath;
@@ -528,10 +531,25 @@ public class map_edit : MonoBehaviour
             Set_UIpos(1);
             now_block = 1;
         }
-        if (GUI.Button(new Rect(px + (50 * 2), 60, 50, 50),"坂"))
+        if (GUI.Button(new Rect(px + (50 * 2), 60, 50, 50),"雪"))
         {
             Set_UIpos(2);
             now_block = 2;
+        }
+        if (GUI.Button(new Rect(px + (50 * 3), 60, 50, 50), "岩"))
+        {
+            Set_UIpos(3);
+            now_block = 3;
+        }
+        if (GUI.Button(new Rect(px + (50 * 4), 60, 50, 50), "害"))
+        {
+            Set_UIpos(4);
+            now_block = 4;
+        }
+        if (GUI.Button(new Rect(px + (50 * 5), 60, 50, 50), "害2"))
+        {
+            Set_UIpos(5);
+            now_block = 5;
         }
 
         //入力テキストの設定を作成
@@ -584,11 +602,18 @@ public class map_edit : MonoBehaviour
                     switch (now_block)
                     {
                         case 0:
+                            //GameObject del = GameObject.Find("chip_" + L_x + "_" + L_y);
+                            //Destroy(del.gameObject);
+                            //map[map_num, (int)-sub32.y, (int)sub32.x] = 0;
                             GameObject dego = GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x);
                             Destroy(dego.gameObject);
                             map[map_num, (int)-sub32.y, (int)sub32.x] = 0;
                             break;
                         case 1:
+                            //GameObject dego = GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x);
+                            //Destroy(dego.gameObject);
+                            //map[map_num, (int)-sub32.y, (int)sub32.x] = 0;
+
                             if (!GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x))
                             {
                                 GameObject subgo1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
@@ -597,7 +622,7 @@ public class map_edit : MonoBehaviour
                                 subgo1.transform.parent = mother.transform;
                                 map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
                             }
-                           
+
                             break;
                         case 2:
                             if (!GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x))
@@ -606,6 +631,36 @@ public class map_edit : MonoBehaviour
                                 subgo2.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
                                 subgo2.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
                                 subgo2.transform.parent = mother.transform;
+                                map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+                            }
+                            break;
+                        case 3:
+                            if (!GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x))
+                            {
+                                GameObject subgo3= Instantiate(bc2) as GameObject;
+                                subgo3.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                subgo3.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                subgo3.transform.parent = mother.transform;
+                                map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+                            }
+                            break;
+                        case 4:
+                            if (!GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x))
+                            {
+                                GameObject subgo4 = Instantiate(bc3) as GameObject;
+                                subgo4.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                subgo4.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                subgo4.transform.parent = mother.transform;
+                                map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+                            }
+                            break;
+                        case 5:
+                            if (!GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x))
+                            {
+                                GameObject subgo5 = Instantiate(bc4) as GameObject;
+                                subgo5.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                subgo5.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                subgo5.transform.parent = mother.transform;
                                 map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
                             }
                             break;
