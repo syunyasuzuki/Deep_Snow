@@ -11,6 +11,16 @@ public class map_edit : MonoBehaviour
     [SerializeField] GameObject bc2;
     [SerializeField] GameObject bc3;
     [SerializeField] GameObject bc4;
+    [SerializeField] GameObject bc5;
+    [SerializeField] GameObject bc6;
+    [SerializeField] GameObject bc7;
+    [SerializeField] GameObject bc8;
+    [SerializeField] GameObject bc9;
+    [SerializeField] GameObject bc10;
+    [SerializeField] GameObject bc11;
+    [SerializeField] GameObject bc12;
+    [SerializeField] GameObject bc13;
+    [SerializeField] GameObject bc14;
 
     //フォルダへのパス
     string fopath;
@@ -526,7 +536,7 @@ public class map_edit : MonoBehaviour
             Set_UIpos(0);
             now_block = 0;
         }
-        if (GUI.Button(new Rect(px + (50 * 1), 60, 50, 50), "四角"))
+        if (GUI.Button(new Rect(px + (50 * 1), 60, 50, 50), "ノーマル"))
         {
             Set_UIpos(1);
             now_block = 1;
@@ -536,20 +546,40 @@ public class map_edit : MonoBehaviour
             Set_UIpos(2);
             now_block = 2;
         }
-        if (GUI.Button(new Rect(px + (50 * 3), 60, 50, 50), "岩"))
+        if (GUI.Button(new Rect(px + (50 * 3), 60, 50, 50), "右下"))
         {
             Set_UIpos(3);
             now_block = 3;
         }
-        if (GUI.Button(new Rect(px + (50 * 4), 60, 50, 50), "害"))
+        if (GUI.Button(new Rect(px + (50 * 4), 60, 50, 50), "左下"))
         {
             Set_UIpos(4);
             now_block = 4;
         }
-        if (GUI.Button(new Rect(px + (50 * 5), 60, 50, 50), "害2"))
+        if (GUI.Button(new Rect(px + (50 * 5), 60, 50, 50), "左下分"))
         {
             Set_UIpos(5);
             now_block = 5;
+        }
+        if (GUI.Button(new Rect(px + (50 * 6), 60, 50, 50), "左下分２"))
+        {
+            Set_UIpos(6);
+            now_block = 6;
+        }
+        if (GUI.Button(new Rect(px + (50 * 7), 60, 50, 50), "右坂"))
+        {
+            Set_UIpos(7);
+            now_block = 7;
+        }
+        if (GUI.Button(new Rect(px + (50 * 8), 60, 50, 50), "左坂大"))
+        {
+            Set_UIpos(8);
+            now_block = 8;
+        }
+        if (GUI.Button(new Rect(px + (50 * 9), 60, 50, 50), "左坂"))
+        {
+            Set_UIpos(9);
+            now_block = 9;
         }
 
         //入力テキストの設定を作成
@@ -613,54 +643,163 @@ public class map_edit : MonoBehaviour
                             //GameObject dego = GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x);
                             //Destroy(dego.gameObject);
                             //map[map_num, (int)-sub32.y, (int)sub32.x] = 0;
-
+                            float x = 0;
+                            int minN = 1;
+                            int maxN = 4;
                             if (!GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x))
                             {
-                                GameObject subgo1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                                subgo1.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
-                                subgo1.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
-                                subgo1.transform.parent = mother.transform;
-                                map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+                                //GameObject subgo1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                                //subgo1.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                //subgo1.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                //subgo1.transform.parent = mother.transform;
+                                //map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+
+
+                                x = UnityEngine.Random.Range(minN, maxN);
+
+                                if (x==1)
+                                {
+                                    GameObject subgo1 = Instantiate(bc1) as GameObject;
+                                    subgo1.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                    subgo1.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                    subgo1.transform.parent = mother.transform;
+                                    map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+                                    x = 0;
+                                }
+                                else if(x==2)
+                                {
+                                    GameObject subgo2 = Instantiate(bc2) as GameObject;
+                                    subgo2.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                    subgo2.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                    subgo2.transform.parent = mother.transform;
+                                    map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+                                    x = 0;
+                                }
+                                else
+                                {
+                                    GameObject subgo3 = Instantiate(bc3) as GameObject;
+                                    subgo3.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                    subgo3.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                    subgo3.transform.parent = mother.transform;
+                                    map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+                                    x = 0;
+                                }
+                                
                             }
 
                             break;
                         case 2:
+                            int minS= 1;
+                            int maxS = 5;
                             if (!GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x))
                             {
-                                GameObject subgo2 = Instantiate(bc1) as GameObject;
-                                subgo2.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
-                                subgo2.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
-                                subgo2.transform.parent = mother.transform;
-                                map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+                                x = UnityEngine.Random.Range(minS, maxS);
+
+                                if (x == 1)
+                                {
+                                    GameObject subgo4 = Instantiate(bc4) as GameObject;
+                                    subgo4.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                    subgo4.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                    subgo4.transform.parent = mother.transform;
+                                    map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+                                    x = 0;
+                                }
+                                else if (x == 2)
+                                {
+                                    GameObject subgo5 = Instantiate(bc5) as GameObject;
+                                    subgo5.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                    subgo5.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                    subgo5.transform.parent = mother.transform;
+                                    map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+                                    x = 0;
+                                }
+                                else if (x == 3) 
+                                {
+                                    GameObject subgo6 = Instantiate(bc6) as GameObject;
+                                    subgo6.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                    subgo6.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                    subgo6.transform.parent = mother.transform;
+                                    map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+                                    x = 0;
+                                }
+                                else
+                                {
+                                    GameObject subgo7 = Instantiate(bc7) as GameObject;
+                                    subgo7.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                    subgo7.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                    subgo7.transform.parent = mother.transform;
+                                    map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+                                    x = 0;
+                                }
                             }
                             break;
                         case 3:
                             if (!GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x))
                             {
-                                GameObject subgo3= Instantiate(bc2) as GameObject;
-                                subgo3.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
-                                subgo3.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
-                                subgo3.transform.parent = mother.transform;
+                                GameObject subgo8= Instantiate(bc8) as GameObject;
+                                subgo8.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                subgo8.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                subgo8.transform.parent = mother.transform;
                                 map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
                             }
                             break;
                         case 4:
                             if (!GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x))
                             {
-                                GameObject subgo4 = Instantiate(bc3) as GameObject;
-                                subgo4.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
-                                subgo4.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
-                                subgo4.transform.parent = mother.transform;
+                                GameObject subgo9 = Instantiate(bc9) as GameObject;
+                                subgo9.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                subgo9.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                subgo9.transform.parent = mother.transform;
                                 map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
                             }
                             break;
                         case 5:
                             if (!GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x))
                             {
-                                GameObject subgo5 = Instantiate(bc4) as GameObject;
-                                subgo5.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
-                                subgo5.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
-                                subgo5.transform.parent = mother.transform;
+                                GameObject subgo10 = Instantiate(bc10) as GameObject;
+                                subgo10.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                subgo10.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                subgo10.transform.parent = mother.transform;
+                                map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+                            }
+                            break;
+                        case 6:
+                            if (!GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x))
+                            {
+                                GameObject subgo11 = Instantiate(bc11) as GameObject;
+                                subgo11.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                subgo11.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                subgo11.transform.parent = mother.transform;
+                                map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+                            }
+                            break;
+                        case 7:
+                            if (!GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x))
+                            {
+                                GameObject subgo12 = Instantiate(bc12) as GameObject;
+                                subgo12.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                subgo12.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                subgo12.transform.parent = mother.transform;
+                                map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+                            }
+                            break;
+                        case 8:
+                            if (!GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x))
+                            {
+                                GameObject subgo13 = Instantiate(bc13) as GameObject;
+                                subgo13.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                subgo13.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                subgo13.transform.parent = mother.transform;
+                                map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+                            }
+                            break;
+                        case 9:
+                            if (!GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x))
+                            {
+                                GameObject subgo14 = Instantiate(bc14) as GameObject;
+                                subgo14.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                subgo14.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                subgo14.transform.parent = mother.transform;
                                 map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
                             }
                             break;
