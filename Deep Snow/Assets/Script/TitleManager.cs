@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class TitleManager : MonoBehaviour
 {
     [SerializeField] Image title_logo;
-    [SerializeField] Image start_logo;
+    [SerializeField] Image start_Button;
 
     [SerializeField] Camera main_camera;
 
@@ -31,16 +31,22 @@ public class TitleManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// スタートボタンで使うメソッド
+    /// </summary>
     public void GameStart()
     {
         gamestart_check = true;
     }
 
+    /// <summary>
+    /// スタートボタンが押されたら呼ばれる
+    /// </summary>
     void GameStart2()
     {
         alpha -= 1.0f * Time.deltaTime;
         title_logo.color = new Color(1.0f, 1.0f, 1.0f, alpha);
-        start_logo.color = new Color(1.0f, 1.0f, 1.0f, alpha);
+        start_Button.color = new Color(1.0f, 1.0f, 1.0f, alpha);
         main_camera.transform.position = new Vector3(0.0f, camera_pos_y, -10.0f);
         if (alpha <= 0.0f)
         {
