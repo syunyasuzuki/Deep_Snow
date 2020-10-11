@@ -2,7 +2,7 @@
 #define BRSurface_h
 
 #include "UnityCG.cginc"
-#include "Assets/Ist/BatchRenderer/Shaders/BatchRenderer.cginc"
+#include "Assets/Hasegawa/Ist/BatchRenderer/Shaders/BatchRenderer.cginc"
 
 
 

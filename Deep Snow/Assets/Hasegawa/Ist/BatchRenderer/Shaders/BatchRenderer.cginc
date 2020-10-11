@@ -1,8 +1,8 @@
 #ifndef BatchRenderer_h
 #define BatchRenderer_h
 
-#include "Assets/Ist/Foundation/Shaders/Math.cginc"
-#include "Assets/Ist/Foundation/Shaders/Geometry.cginc"
+#include "Assets/Hasegawa/Ist/Foundation/Shaders/Math.cginc"
+#include "Assets/Hasegawa/Ist/Foundation/Shaders/Geometry.cginc"
 
 
 #if ENABLE_INSTANCE_BUFFER
