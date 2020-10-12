@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 07f0972703ff4154c959f15408df64c4
+guid: 9ef5fdb9cf10b7d47801ebb01c449715
 TextureImporter:
   fileIDToRecycleName:
     21300000: map_tile_0
@@ -34,7 +34,7 @@ TextureImporter:
     externalNormalMap: 0
     heightScale: 0.25
     normalMapFilter: 0
-  isReadable: 0
+  isReadable: 1
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
@@ -54,7 +54,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
