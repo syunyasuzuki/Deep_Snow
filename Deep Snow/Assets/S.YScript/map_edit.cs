@@ -3,14 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Text;
-using System;
+using Random = UnityEngine.Random;
 
 public class map_edit : MonoBehaviour
 {
-    [SerializeField] GameObject bc1;
-    [SerializeField] GameObject bc2;
-    [SerializeField] GameObject bc3;
-    [SerializeField] GameObject bc4;
+    [SerializeField] GameObject[] nbc = new GameObject[3];
+    [SerializeField] GameObject[] sbc = new GameObject[4];
+    [SerializeField] GameObject[] bc= new GameObject[13];
 
     //フォルダへのパス
     string fopath;
@@ -86,6 +85,12 @@ public class map_edit : MonoBehaviour
     {
         maincam = GetComponent<Camera>();
         camera_z = transform.position.z;
+        float camera_x = (Maxsize_x - 1) / 2.0f;
+        float camera_y = (Maxsize_y - 1) / 2.0f * -1;
+        int min = Mathf.Min(Maxsize_x, Maxsize_y);
+        float camera_size = min / 2.0f;
+        maincam.transform.position = new Vector3(camera_x, camera_y, camera_z);
+        maincam.orthographicSize = camera_size;//
     }
     //カメラの引き具合
     float Move_camera_size = 1.0f;
@@ -116,21 +121,18 @@ public class map_edit : MonoBehaviour
     //最大で保存できるマップの数
     const int Maxmap_num = 10;
     //マップの最大サイズ
-    const int Maxsize_x = 50;
-    const int Maxsize_y = 50;
+    const int Maxsize_x = 32;
+    const int Maxsize_y = 18;
 
     //読み込んだファイルデータ
     string[] all_data;
-    int map_n = 0;
+    int map_n = 10;
     //現在読み込み中のマップ番号(x-1=n)
     int map_num = 0;
     //現在選択中のブロック
     int now_block = 0;
     //マップの情報を格納
     int[,,] map;
-    //マップの大きさ
-    int[] L_x;
-    int[] L_y;
 
     //int型の桁数を調べる
     int Int_length(int n)
@@ -142,8 +144,6 @@ public class map_edit : MonoBehaviour
     void First_setting()
     {
         map = new int[Maxmap_num, Maxsize_y, Maxsize_x];
-        L_x = new int[Maxsize_x];
-        L_y = new int[Maxsize_y];
     }
     //配列を再度確保しなおす
     void Reset_setting()
@@ -161,17 +161,6 @@ public class map_edit : MonoBehaviour
             }
         }
     }
-    //マップ番号ごとのステージの大きさを読み込む短縮
-    void Read_L_size(int n)
-    {
-        string[] sub_x = all_data[1].Split(',');
-        string[] sub_y = all_data[2].Split(',');
-        for (int i = 0; i < n; i++)
-        {
-            L_x[i] = int.Parse(sub_x[i]);
-            L_y[i] = int.Parse(sub_y[i]);
-        }
-    }
     //マップ本体を配列に変換する
     void Read_M_line(int n)
     {
@@ -179,15 +168,14 @@ public class map_edit : MonoBehaviour
         {
             //変換するためのデータを入れるとこ
             string[] str1 = new string[Maxsize_y];
-            for (int lu = 0; lu < L_y[i]; lu++)
+            for (int lu = 0; lu < Maxsize_y; lu++)
             {
-                str1[lu] = all_data[5 + lu + (50 + 2) * i];
-                //必要部分だけを抜き取る
-                string str2 = str1[lu].Substring(1, str1[lu].Length - 3);
+                str1[lu] = all_data[lu + Maxsize_y * i + 1];
+                
                 //文字列をばらして配列に入れる
-                string[] str3 = str2.Split(',');
+                string[] str3 = str1[lu].Split(',');
                 //文字列をint型に変換してマップに書き込み
-                for (int na = 0; na < L_x[i]; na++)
+                for (int na = 0; na <Maxsize_x; na++)
                 {
                     map[i, lu, na] = int.Parse(str3[na]);
                 }
@@ -205,11 +193,10 @@ public class map_edit : MonoBehaviour
         //保存されているマップのマップ番号と各大きさとマップを表示
         for (int i = 0; i < map_n; i++)
         {
-            Debug.Log("No." + i + "　L_x[" + i + "]:" + L_x[i] + "　L_y[" + i + "]:" + L_y[i]);
-            for (int lu = 0; lu < L_y[i]; lu++)
+            for (int lu = 0; lu < Maxsize_y; lu++)
             {
                 string str1 = "";
-                for (int na = 0; na < L_x[i]; na++)
+                for (int na = 0; na < Maxsize_x; na++)
                 {
                     str1 = str1 + " " + map[i, lu, na];
                 }
@@ -223,8 +210,6 @@ public class map_edit : MonoBehaviour
     {
         map_num = 0;
         map_n = 1;
-        L_x[0] = 20;
-        L_y[0] = 15;
     }
     //読み込んだファイルデータをもとに現在保存されてるマップ情報を作成する
     void Set_mapdata()
@@ -233,9 +218,7 @@ public class map_edit : MonoBehaviour
         //1行目マップの数、
         map_n = int.Parse(all_data[0]);
         if (map_n > Maxmap_num) { map_n = Maxmap_num; }
-        //2行目3行目、各マップの大きさ(x,y)
-        Read_L_size(map_n);
-        //４～以降配列データ
+        //2～以降配列データ
         Read_M_line(map_n);
     }
     //マップの範囲がわかるように枠を表示する
@@ -243,22 +226,22 @@ public class map_edit : MonoBehaviour
     {
         float def_hw = 0.4f;
         GameObject mapgr = new GameObject("mapgr");
-        int w_size = L_x[map_num];
-        float w_pos = (L_x[map_num] - 1) / 2.0f;
+        int w_size = Maxsize_x;
+        float w_pos = (Maxsize_x - 1) / 2.0f;
         GameObject loof = GameObject.CreatePrimitive(PrimitiveType.Cube);
         loof.transform.localScale = new Vector3(w_size, def_hw, 1);
         loof.transform.position = new Vector3(w_pos, 0.7f, 0);
         GameObject floor = GameObject.CreatePrimitive(PrimitiveType.Cube);
         floor.transform.localScale = new Vector3(w_size, def_hw, 1);
-        floor.transform.position = new Vector3(w_pos, -L_y[map_num] + 0.3f, 0);
-        int h_size = L_y[map_num];
-        float h_pos = (L_y[map_num] - 1) / 2.0f * -1;
+        floor.transform.position = new Vector3(w_pos, -Maxsize_y + 0.3f, 0);
+        int h_size = Maxsize_y;
+        float h_pos = (Maxsize_y - 1) / 2.0f * -1;
         GameObject left = GameObject.CreatePrimitive(PrimitiveType.Cube);
         left.transform.localScale = new Vector3(def_hw, h_size, 1);
         left.transform.position = new Vector3(-0.7f, h_pos, 0);
         GameObject right = GameObject.CreatePrimitive(PrimitiveType.Cube);
         right.transform.localScale = new Vector3(def_hw, h_size, 1);
-        right.transform.position = new Vector3(L_x[map_num] - 0.3f, h_pos, 0);
+        right.transform.position = new Vector3(Maxsize_x - 0.3f, h_pos, 0);
         loof.transform.parent = mapgr.transform;
         floor.transform.parent = mapgr.transform;
         left.transform.parent = mapgr.transform;
@@ -267,18 +250,38 @@ public class map_edit : MonoBehaviour
     //マップ情報をもとにマップを作成する
     void Create_Map()
     {
-        Create_Mapgrid();
         GameObject mapmother = new GameObject("mapchip");
-        for (int i = 0; i < L_y[map_num]; i++)
+        for (int i = 0; i < Maxsize_y; i++)
         {
-            for (int lu = 0; lu < L_x[map_num]; lu++)
+            for (int lu = 0; lu < Maxsize_x; lu++)
             {
-                if (map[map_num, i, lu] == 1)
+                if (map[map_num, i, lu] != 0)
                 {
-                    GameObject subgo = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                    subgo.transform.position = new Vector3(lu, -i, 0);
-                    subgo.name = "chip_" + i + "_" + lu;
-                    subgo.transform.parent = mapmother.transform;
+                    switch (map[map_num, i, lu])
+                    {
+                        case 1:
+                                int a = Random.Range(0, 2);
+                                GameObject ob = Instantiate(nbc[a]);
+                                ob.name = "chip_" + i + "_" + lu;
+                                ob.transform.position = new Vector3(lu,-i, 0);
+                                ob.transform.parent = mapmother.transform;
+                            break;
+
+                        case 2:
+                                int b = Random.Range(0, 3);
+                                GameObject ob2 = Instantiate(sbc[b]);
+                                ob2.name = "chip_" + i + "_" + lu;
+                                ob2.transform.position = new Vector3(lu, -i, 0);
+                                ob2.transform.parent = mapmother.transform;     
+                            break;
+
+                        default:
+                                GameObject ob3 = Instantiate(bc[map[map_num,i,lu]]);
+                                ob3.name = "chip_" + i + "_" + lu;
+                                ob3.transform.position = new Vector3(lu, -i, 0);
+                                ob3.transform.parent = mapmother.transform;
+                            break;
+                    }
                 }
             }
         }
@@ -288,8 +291,6 @@ public class map_edit : MonoBehaviour
     {
         GameObject deathmother = GameObject.Find("mapchip");
         Destroy(deathmother.gameObject);
-        GameObject deathgr = GameObject.Find("mapgr");
-        Destroy(deathgr.gameObject);
     }
     //ファイルを一括で読み込む
     void Read_data()
@@ -298,10 +299,11 @@ public class map_edit : MonoBehaviour
         if (all_data.Length != 0)
         {
             Debug.Log("読み込み完了");
-            Clear_readdata();
+            //Clear_readdata();
             Set_mapdata();
             Debug_mapdata();
             Create_Map();
+          
         }
         else
         {
@@ -318,28 +320,19 @@ public class map_edit : MonoBehaviour
     {
         Debug.Log("ファイルに書き出し");
         //ファイルに書き出す行数を確定
-        int Write_num = (2 + Maxsize_y) * map_n + 5;
-        Debug.Log(Write_num);
+        //int Write_num = (2 + Maxsize_y) * map_n + 5;
+        int Write_num = Maxsize_y * map_n + 1;
+
         string[] write_str = new string[Write_num];
+
         //マップの数、マップの大きさを確定
         write_str[0] = "" + map_n;
-        string str_x = "", str_y = "";
-        for (int i = 0; i < map_n; i++)
-        {
-            str_x = str_x + L_x[i] + ",";
-            str_y = str_y + L_y[i] + ",";
-        }
-        str_x = str_x.Substring(0, str_x.Length - 1);
-        str_y = str_y.Substring(0, str_y.Length - 1);
-        write_str[1] = str_x;
-        write_str[2] = str_y;
-        Debug.Log(str_x + "　" + str_y);
+     
         //マップ情報を確定
-        write_str[3] = "    int[,,] map = new int[,,]{";
         for (int i = 0; i < map_n; i++)
         {
-            int subint = 4 + (Maxsize_y + 2) * i;
-            write_str[subint] = "        {";
+            Debug.Log(i);
+            int subint = Maxsize_y* i;
             for (int lu = 0; lu < Maxsize_y; lu++)
             {
                 string sub_x = "";
@@ -348,12 +341,11 @@ public class map_edit : MonoBehaviour
                     sub_x = sub_x + map[i, lu, na] + ",";
                 }
                 sub_x = sub_x.Substring(0, sub_x.Length - 1);
-                sub_x = "            {" + sub_x + " },";
                 write_str[subint + lu + 1] = sub_x;
             }
-            write_str[subint + Maxsize_y + 1] = "        },";
+          
         }
-        write_str[Write_num - 1] = "	};";
+       
         //テキストに書き出し
         File.WriteAllLines(fipath, write_str);
         Debug.Log("書き出し完了");
@@ -381,23 +373,21 @@ public class map_edit : MonoBehaviour
     void GUI_setting()
     {
         max_text_num = Int_length(Maxmap_num);  //何文字まで打てるか　
-        max_text_size_x = Int_length(Maxsize_x);
-        max_text_size_y = Int_length(Maxsize_y);
-        Debug.Log(max_text_num + " " + max_text_size_x + " " + max_text_size_y);
+        //max_text_size_x = Int_length(Maxsize_x);
+        //max_text_size_y = Int_length(Maxsize_y);
+        //Debug.Log(max_text_num + " " + max_text_size_x + " " + max_text_size_y);
     }
     //入力処理を書き換え
-    void Set_text_num(int n, int x, int y)
+    void Set_text_num(int n)
     {
         text_num = "" + n;
-        text_size_x = "" + x;
-        text_size_y = "" + y;
     }
     //入力処理の確定
     void Set_text_num()
     {
         //同じマップを指定した場合大きさを変える
         //違うマップを指定された場合移動するだけ
-        int sub_n = 0, sub_x = 0, sub_y = 0;
+        int sub_n = 0;
         try
         {
             sub_n = int.Parse(text_num);
@@ -407,91 +397,62 @@ public class map_edit : MonoBehaviour
             Debug.LogError("文字列の変換に失敗しました、マップ番号を確認してください");
             return;
         }
-        try
+        if(map_num!=sub_n)
         {
-            sub_x = int.Parse(text_size_x);
-        }
-        catch
-        {
-            Debug.LogError("文字列の変換に失敗しました、Xを確認してください");
-            return;
-        }
-        try
-        {
-            sub_y = int.Parse(text_size_y);
-        }
-        catch
-        {
-            Debug.LogError("文字列の変換に失敗しました、Yを確認してください");
-            return;
-        }
-        //同じマップの場合
-        if (sub_n == map_num)
-        {
-            //同じ大きさへのロードをはじく
-            if (sub_x == L_x[sub_n] && sub_y == L_y[sub_n]) { Debug.Log("同じマップへのロードです"); return; }
-            //1より小さくなるのと最大範囲より大きくなるのを防ぐ
-            if (sub_x < 1 || sub_y < 1 || sub_x > Maxsize_x || sub_y > Maxsize_y) { Debug.Log("範囲外へのロードです"); return; }
-            //マップの拡張または縮小を行う
-            map_num = sub_n;
-            int[,] sub_map = new int[sub_y, sub_x];
-            for (int i = 0; i < sub_y; i++)
-            {
-                for (int lu = 0; lu < sub_x; lu++)
-                {
-                    sub_map[i, lu] = map[map_num, i, lu];
-                }
-            }
-            for (int i = 0; i < L_y[map_num]; i++)
-            {
-                for (int lu = 0; lu < L_x[map_num]; lu++)
-                {
-                    map[map_num, i, lu] = 0;
-                }
-            }
-            L_x[map_num] = sub_x;
-            L_y[map_num] = sub_y;
-            for (int i = 0; i < L_y[map_num]; i++)
-            {
-                for (int lu = 0; lu < L_x[map_num]; lu++)
-                {
-                    map[map_num, i, lu] = sub_map[i, lu];
-                }
-            }
             Delete_Map();
+            map_num = sub_n;
             Create_Map();
         }
-        //違うマップの場合
-        else
-        {
-            //作成されたマップの数の範囲内か確認する
-            //範囲内なら今あるマップを削除して新しく生成
-            if (sub_n < map_n && sub_n >= 0)
-            {
-                Delete_Map();
-                map_num = sub_n;
-                Create_Map();
-            }
-            //範囲外の場合は最大マップ数以下の場合、追加でマップを作成する
-            else
-            {
-                if (sub_n < Maxmap_num)
-                {
-                    Delete_Map();
-                    map_n++;
-                    map_num = map_n - 1;
-                    L_x[map_num] = sub_x;
-                    L_y[map_num] = sub_y;
-                    Create_Map();
-                }
-                //最大マップ数に到達しているか範囲外が指定された場合はなにもしない
-                else
-                {
-                    Debug.Log("最大マップ数に到達しているか、範囲外が指定されています");
-                }
-            }
-        }
+        
     }
+    //GUI用のテクスチャ
+    [SerializeField] Texture2D map_texture = null;
+    [SerializeField] Texture2D spike = null;
+    [SerializeField] Texture2D enemy = null;
+    [SerializeField] Texture2D goal = null;
+    [SerializeField] Texture2D player = null;
+    Texture2D[] Sliced_texture = new Texture2D[14];
+    string[] texture_name = new string[14]
+    {
+        "空白","","","","","","","","","","","","",""
+    };
+
+    //テクスチャを切り抜いて返す
+    Texture2D Slice_Texture2D(int x ,int y)
+    {
+        Color[] pix = new Color[25 * 25];
+
+        pix = map_texture.GetPixels(x, y, 25, 25);
+
+        Texture2D slice_tex = new Texture2D(25, 25);
+
+        slice_tex.SetPixels(pix);
+
+        slice_tex.Apply();
+
+        return　slice_tex;
+    }
+
+    //切り抜き場所を指定
+    void Set_textures()
+    {
+        //どこから切り抜くか座標を指定
+        Sliced_texture[0] = Slice_Texture2D(0, 25);
+        Sliced_texture[1] = Slice_Texture2D(50, 0);
+        Sliced_texture[2] = Slice_Texture2D(0, 0);
+        Sliced_texture[3] = Slice_Texture2D(75, 25);
+        Sliced_texture[4] = Slice_Texture2D(25, 25);
+        Sliced_texture[5] = Slice_Texture2D(150, 25);
+        Sliced_texture[6] = Slice_Texture2D(125, 25);
+        Sliced_texture[7] = Slice_Texture2D(75, 0);
+        Sliced_texture[8] = Slice_Texture2D(125, 0);
+        Sliced_texture[9] = Slice_Texture2D(25, 0);
+        Sliced_texture[10] = spike;
+        Sliced_texture[11] = enemy;
+        Sliced_texture[12] = goal;
+        Sliced_texture[13] = player;
+    }
+  
     //UIをプログラムから作成
     void OnGUI()
     {
@@ -503,62 +464,41 @@ public class map_edit : MonoBehaviour
         GUIStyle Set_text = GUI.skin.label;
         Set_text.fontSize = Def_fontsize;
         //テキストUIを表示
-        GUI.Label(new Rect(20, 20, 250, 40), "現在のマップ：" + map_num + "　大きさ（" + L_x[map_num] + " ," + L_y[map_num] + " ）");
-        GUI.Label(new Rect(50, 50, 250, 40), "N　　　X　　　Y");
+        GUI.Label(new Rect(20, 20, 250, 40), "現在のマップ：" + map_num );
+        GUI.Label(new Rect(50, 50, 250, 40), "N");
         GUI.Label(new Rect(px + (50 * px_num), 10, 100, 100), " 選択中\nブロック\n　 ▼", Set_text);
         //ボタンの設定を作成する
         GUIStyle Set_button = GUI.skin.button;
         Set_button.fontSize = Def_fontsize;
         Set_button.normal.textColor = Color.white;
-        //ボタンを表示する
-        //Rect(position x, position y, ボタンの大きさ)
+        Set_button.normal.background = default;
+        
+        //ボタンの表示
         if (GUI.Button(new Rect(200, 70, 40, 40), "決定"))
         {
             Set_text_num();
         }
+
         if (GUI.Button(new Rect(250, 70, 40, 40), "書出"))
         {
             Write_all_data();
         }
         Set_button.fontSize = Max_fontsize;
-        if (GUI.Button(new Rect(px + (50 * 0), 60, 50, 50), "空白"))
+        for(int i=0;i<14;++i)
         {
-            Set_UIpos(0);
-            now_block = 0;
+            Set_button.normal.background = Sliced_texture[i];
+            if (GUI.Button(new Rect(px + (50 * i), 60, 50, 50), texture_name[i]))
+            {
+                Set_UIpos(i);
+                now_block = i;
+            }
         }
-        if (GUI.Button(new Rect(px + (50 * 1), 60, 50, 50), "四角"))
-        {
-            Set_UIpos(1);
-            now_block = 1;
-        }
-        if (GUI.Button(new Rect(px + (50 * 2), 60, 50, 50),"雪"))
-        {
-            Set_UIpos(2);
-            now_block = 2;
-        }
-        if (GUI.Button(new Rect(px + (50 * 3), 60, 50, 50), "岩"))
-        {
-            Set_UIpos(3);
-            now_block = 3;
-        }
-        if (GUI.Button(new Rect(px + (50 * 4), 60, 50, 50), "害"))
-        {
-            Set_UIpos(4);
-            now_block = 4;
-        }
-        if (GUI.Button(new Rect(px + (50 * 5), 60, 50, 50), "害2"))
-        {
-            Set_UIpos(5);
-            now_block = 5;
-        }
-
+      
         //入力テキストの設定を作成
         GUIStyle Set_textfield = GUI.skin.textField;
         Set_textfield.fontSize = Max_fontsize;
         //入力テキストを作成
         text_num = GUI.TextField(new Rect(50, 70, 40, 40), text_num, max_text_num);
-        text_size_x = GUI.TextField(new Rect(100, 70, 40, 40), text_size_x, max_text_size_x);
-        text_size_y = GUI.TextField(new Rect(150, 70, 40, 40), text_size_y, max_text_size_y);
     }
 
     void Awake()
@@ -568,9 +508,11 @@ public class map_edit : MonoBehaviour
         First_setting();
         Read_data();
         GUI_setting();
-        Set_text_num(map_num, L_x[0], L_y[0]);
+        Set_text_num(map_num);
         Set_camera_z();
         Create_mouse_point();
+        Create_Mapgrid();
+        Set_textures();
     }
     void Start()
     {
@@ -592,7 +534,7 @@ public class map_edit : MonoBehaviour
             //Debug.Log(sub31);
             //Debug.Log((int)sub32.x + " " + (int)sub32.y);
             //範囲外を除外
-            if (sub32.x >= 0 && sub32.x < L_x[map_num] && -sub32.y >= 0 && -sub32.y < L_y[map_num])
+            if (sub32.x >= 0 && sub32.x < Maxsize_x && -sub32.y >= 0 && -sub32.y < Maxsize_y)
             {
                 //mapに確認
                 if (map[map_num, (int)-sub32.y, (int)sub32.x] != now_block)
@@ -602,65 +544,42 @@ public class map_edit : MonoBehaviour
                     switch (now_block)
                     {
                         case 0:
-                            //GameObject del = GameObject.Find("chip_" + L_x + "_" + L_y);
-                            //Destroy(del.gameObject);
-                            //map[map_num, (int)-sub32.y, (int)sub32.x] = 0;
                             GameObject dego = GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x);
                             Destroy(dego.gameObject);
                             map[map_num, (int)-sub32.y, (int)sub32.x] = 0;
                             break;
-                        case 1:
-                            //GameObject dego = GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x);
-                            //Destroy(dego.gameObject);
-                            //map[map_num, (int)-sub32.y, (int)sub32.x] = 0;
 
+                        case 1:
                             if (!GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x))
                             {
-                                GameObject subgo1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
-                                subgo1.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
-                                subgo1.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
-                                subgo1.transform.parent = mother.transform;
-                                map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+                                int a = Random.Range(0, 2);
+                                GameObject ob = Instantiate(nbc[a]);
+                                ob.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                ob.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                ob.transform.parent = mother.transform;
+                                map[map_num, (int)-sub32.y, (int)sub32.x] = 1;
                             }
-
                             break;
+
                         case 2:
                             if (!GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x))
                             {
-                                GameObject subgo2 = Instantiate(bc1) as GameObject;
-                                subgo2.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
-                                subgo2.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
-                                subgo2.transform.parent = mother.transform;
-                                map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+                                int b = Random.Range(0, 3);
+                                GameObject ob2 = Instantiate(sbc[b]);
+                                ob2.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                ob2.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                ob2.transform.parent = mother.transform;
+                                map[map_num, (int)-sub32.y, (int)sub32.x] = 2;
                             }
                             break;
-                        case 3:
+
+                        default:
                             if (!GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x))
                             {
-                                GameObject subgo3= Instantiate(bc2) as GameObject;
-                                subgo3.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
-                                subgo3.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
-                                subgo3.transform.parent = mother.transform;
-                                map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
-                            }
-                            break;
-                        case 4:
-                            if (!GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x))
-                            {
-                                GameObject subgo4 = Instantiate(bc3) as GameObject;
-                                subgo4.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
-                                subgo4.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
-                                subgo4.transform.parent = mother.transform;
-                                map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
-                            }
-                            break;
-                        case 5:
-                            if (!GameObject.Find("chip_" + (int)-sub32.y + "_" + (int)sub32.x))
-                            {
-                                GameObject subgo5 = Instantiate(bc4) as GameObject;
-                                subgo5.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
-                                subgo5.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
-                                subgo5.transform.parent = mother.transform;
+                                GameObject ob3 = Instantiate(bc[now_block]);
+                                ob3.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                ob3.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                ob3.transform.parent = mother.transform;
                                 map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
                             }
                             break;
@@ -668,7 +587,13 @@ public class map_edit : MonoBehaviour
                 }
             }
         }
-    }
+    }                        
+                                    //GameObject subgo1 = Instantiate(bc1) as GameObject;
+                                    //subgo1.name = "chip_" + (int)-sub32.y + "_" + (int)sub32.x;
+                                    //subgo1.transform.position = new Vector3((int)sub32.x, (int)sub32.y, 0);
+                                    //subgo1.transform.parent = mother.transform;
+                                    //map[map_num, (int)-sub32.y, (int)sub32.x] = now_block;
+                                    //x = 0;
 
     void Update()
     {
