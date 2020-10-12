@@ -288,7 +288,7 @@ public class Demo_player2 : MonoBehaviour
         }
         //座標変換
         player.transform.position += all_move;
-        //反転
+        //反転処理
         float Key = 0;
         if (m_x > 0)
         {
@@ -320,13 +320,13 @@ public class Demo_player2 : MonoBehaviour
     {
         Player_task();       
         //能力 on of     
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))//左クリックを押している間行動stop
         {            
             Move_spd = 0;
             Max_jump_count = 0;
             Jump_spd = 0;                     
         }
-        if (Input.GetMouseButtonUp(0))
+        if (Input.GetMouseButtonUp(0))//左クリックを離したら行動start
         {
             Move_spd = 2.0f / 60;
            Max_jump_count = 15;

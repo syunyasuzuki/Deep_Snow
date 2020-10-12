@@ -5,7 +5,7 @@ using UnityEngine;
 public class AnimationCon : MonoBehaviour
 {   
     Animator animator;
-    bool animationflag = true;
+    bool animationflag = true;//アニメーションのフラグ
     void Start()
     {
        animator = GetComponent<Animator>();     
@@ -20,15 +20,15 @@ public class AnimationCon : MonoBehaviour
             if (m_x > 0)
             {
                 animator.SetBool("walk", true);
-                if (Input.GetMouseButtonDown(0))  animator.SetTrigger("AbilityTrigger");
+                
             }
             else if (m_x < 0)
             {
                 animator.SetBool("walk", true);
-                if (Input.GetMouseButtonDown(0)) animator.SetTrigger("AbilityTrigger");
+               
             }
             else animator.SetBool("walk", false);
-            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.LeftShift))
+            if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.LeftShift))//ジャンプアニメーションON
             {
                 animator.SetTrigger("jumpTrigger");
             }            
@@ -37,8 +37,11 @@ public class AnimationCon : MonoBehaviour
             
             //animator.SetTrigger("DieTrigger");
         }
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0))//能力のアニメーションON　walkのアニメーションOFF
+        {
             animator.SetTrigger("AbilityTrigger");
+            animator.SetBool("walk", false);
+        }
         if (animationflag == false)
         {
             if (Input.GetMouseButtonUp(0))
