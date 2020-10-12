@@ -8,18 +8,36 @@ public class TitleManager : MonoBehaviour
     [SerializeField] Image title_logo;
     [SerializeField] Image start_Button;
 
-    [SerializeField] Camera main_camera;
+    [SerializeField] Image select_1;
+    [SerializeField] Image select_2;
+    [SerializeField] Image select_3;
+
+    [SerializeField] AudioClip start_se;
+    [SerializeField] AudioClip select_se;
+
+    AudioSource audio;
 
     bool gamestart_check;
+    bool select_check;
 
-    float camera_pos_y;
     float alpha;
+    float alpha2;
 
     // Start is called before the first frame update
     void Start()
     {
+        audio = GetComponent<AudioSource>();
+
+        audio.clip = start_se;
+
         alpha = 1.0f;
+        alpha2 = 0.0f;
         gamestart_check = false;
+        select_check = false;
+
+        select_1.color = new Color(1.0f, 1.0f, 1.0f, alpha2);
+        select_2.color = new Color(1.0f, 1.0f, 1.0f, alpha2);
+        select_3.color = new Color(1.0f, 1.0f, 1.0f, alpha2);
     }
 
     // Update is called once per frame
@@ -27,30 +45,47 @@ public class TitleManager : MonoBehaviour
     {
         if (gamestart_check == true)
         {
-            GameStart2();
+            GameStart();
+        }
+
+        if(select_check == true)
+        {
+            Invoke("OpenSelect", 0.2f);
         }
     }
 
     /// <summary>
     /// スタートボタンで使うメソッド
     /// </summary>
-    public void GameStart()
+    public void StartClick()
     {
+        audio.Play();
         gamestart_check = true;
     }
 
     /// <summary>
     /// スタートボタンが押されたら呼ばれる
     /// </summary>
-    void GameStart2()
+    void GameStart()
     {
         alpha -= 1.0f * Time.deltaTime;
         title_logo.color = new Color(1.0f, 1.0f, 1.0f, alpha);
         start_Button.color = new Color(1.0f, 1.0f, 1.0f, alpha);
-        main_camera.transform.position = new Vector3(0.0f, camera_pos_y, -10.0f);
         if (alpha <= 0.0f)
         {
-            camera_pos_y -= 2.0f * Time.deltaTime;
+            select_check = true;
         }
+    }
+
+    /// <summary>
+    /// ステージセレクトのボタンを表示する
+    /// </summary>
+    void OpenSelect()
+    {
+        audio.clip = select_se;
+        alpha2 += 1.0f * Time.deltaTime;
+        select_1.color = new Color(1.0f, 1.0f, 1.0f, alpha2);
+        select_2.color = new Color(1.0f, 1.0f, 1.0f, alpha2);
+        select_3.color = new Color(1.0f, 1.0f, 1.0f, alpha2);
     }
 }
