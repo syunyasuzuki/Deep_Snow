@@ -61,6 +61,7 @@ public class PlayerCon_enum : MonoBehaviour
         {
             transform.localScale = new Vector3(key, 1, 1);
         }
+        
     }
 }
 
