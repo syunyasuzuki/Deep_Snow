@@ -527,8 +527,6 @@ MonoBehaviour:
   - {fileID: 2778871104318651363, guid: 9bb24eee14400e746b289a922a88e482, type: 3}
   - {fileID: 6071112024930642034, guid: 9bfc0254f19eb1d4ea303aaf5ee73a41, type: 3}
   - {fileID: 199956105631648433, guid: a4dac93b2a11b11418c0ca8eceb2f4e0, type: 3}
-  - {fileID: 0}
-  - {fileID: 0}
   map_texture: {fileID: 2800000, guid: 9ef5fdb9cf10b7d47801ebb01c449715, type: 3}
   spike: {fileID: 2800000, guid: f4ef1876790aca84991d76d94350289d, type: 3}
   enemy: {fileID: 2800000, guid: 929b72d613fdd074c9684dd2f125cfba, type: 3}
