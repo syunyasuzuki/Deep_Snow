@@ -9,8 +9,7 @@ public class Demo_player2 : MonoBehaviour
     const int Mapsize_y = 6;
     public GameObject player;//Player
     bool Abilityswitch = true;//能力onの判定
-    Animator animator;
-    bool Dieflag = false;
+    Animator animator;   
     float alpha =1;
     void Set_camera()
     {
@@ -84,14 +83,12 @@ public class Demo_player2 : MonoBehaviour
             {
                 //死亡処理               
                 animator.SetTrigger("DieTrigger");
-                alpha -= Time.deltaTime;
-                new Color(0.0f, 0.0f, 0.0f, alpha);
-                if (alpha < 0)
-                {
-                    player.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
+                gameObject.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, alpha);
+                alpha -= 1.0f * Time.deltaTime;
+                if (alpha <= 0) {  
+                player.transform.position = new Vector3(0,0,0);
                     alpha = 1;
-                }
-                            
+                    }
             }
             Vector3 s_pos = spike_pos[i] - p_pos;
         }
@@ -314,32 +311,20 @@ public class Demo_player2 : MonoBehaviour
         Set_camera();
         Set_map();
         Set_player();
-      animator =  GetComponent<Animator>();
+        animator =  GetComponent<Animator>();
       
     }
 
     // Update is called once per frame
     void Update()
     {
-        Player_task();
-        if(Dieflag  == true)
-        {
-           
-        }
+        Player_task();       
         //能力 on of     
         if (Input.GetMouseButtonDown(0))
-        {
+        {            
             Move_spd = 0;
-           Max_jump_count = 0;
-            Jump_spd = 0;
-            animator.SetTrigger("DieTrigger");
-            alpha -= Time.deltaTime;
-            new Color(0.0f, 0.0f, 0.0f, alpha);
-            if (alpha < 0)
-            {
-                player.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
-                alpha = 1;
-            }
+            Max_jump_count = 0;
+            Jump_spd = 0;                     
         }
         if (Input.GetMouseButtonUp(0))
         {
@@ -347,6 +332,18 @@ public class Demo_player2 : MonoBehaviour
            Max_jump_count = 15;
             Jump_spd = 8.0f / 60;
         }
-        Debug.Log(alpha);
+        //if (Input.GetKey(KeyCode.Z))
+        //{
+        //    animator.SetTrigger("DieTrigger");
+        //    gameObject.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 1.0f, alpha);
+        //    alpha -= 1.0f * Time.deltaTime;
+        //    Debug.Log(alpha);
+        //    if (alpha <= 0)
+        //    {
+                
+        //        player.transform.position = new Vector3(0, 0, 0);
+        //        alpha = 1;
+        //    }
+        //}       
     }
 }
