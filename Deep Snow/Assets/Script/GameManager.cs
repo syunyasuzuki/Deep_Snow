@@ -12,11 +12,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] Button retry = null;
     [SerializeField] Button back = null;
 
+    [SerializeField] GameObject menu;
+
     string now_scene;
 
     // Start is called before the first frame update
     void Start()
     {
+        menu.SetActive(false);
         fade.FadeIn(0.0f);
         now_scene = SceneManager.GetActiveScene().name;
     }
@@ -26,13 +29,14 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+            menu.SetActive(true);
             fade.FadeOut(1.0f);
         }
     }
 
     public void Go_Title()
     {
-        SceneManager.LoadScene("Title");
+        SceneManager.LoadScene("TitleScene");
     }
 
     public void Retry()
@@ -41,7 +45,9 @@ public class GameManager : MonoBehaviour
     }
 
     public void Back()
-    {
-        fade.FadeIn(1.0f);
+    { 
+        fade.FadeIn(1.0f ,()=> {
+            menu.SetActive(false);
+        });
     }
 }

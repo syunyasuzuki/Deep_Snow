@@ -10,6 +10,8 @@ TextureImporter:
     21300010: option_Logo_5
     21300012: option_Logo_6
     21300014: option_Logo_7
+    21300016: option_Logo_8
+    21300018: option_Logo_9
   externalObjects: {}
   serializedVersion: 9
   mipmaps:
@@ -107,7 +109,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 27
+        y: 36
         width: 31
         height: 7
       alignment: 0
@@ -117,7 +119,7 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9c21c3a5046e2f345860bd5f68af22fb
+      spriteID: c2fdc6218037c4447b58cca4fd55573c
       vertices: []
       indices: 
       edges: []
@@ -127,6 +129,26 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
+        y: 27
+        width: 31
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f859d067de8abd34e8d41af628b38b41
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: option_Logo_2
+      rect:
+        serializedVersion: 2
+        x: 0
         y: 18
         width: 31
         height: 7
@@ -137,13 +159,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6fb0024f5a640604cbfcc538bee49a3a
+      spriteID: 375a404dfa724c846b9e208dcb00ba73
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: option_Logo_2
+      name: option_Logo_3
       rect:
         serializedVersion: 2
         x: 0
@@ -157,18 +179,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a67a00b40adbb934599c22b2ceedab35
+      spriteID: c073657150d19ee46be2fbd2ff143553
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: option_Logo_3
+      name: option_Logo_4
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 30
+        width: 31
         height: 7
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -177,13 +199,33 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 26031177014a20443bd5f006766304ff
+      spriteID: 98b6af3bd825a4544a1e598d130c58e7
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: option_Logo_4
+      name: option_Logo_5
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 36
+        width: 31
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 89509d644d86f144e999769d89692e48
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: option_Logo_6
       rect:
         serializedVersion: 2
         x: 37
@@ -197,13 +239,13 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 618c53bcdb865c14bb6d83cdcbf5bd19
+      spriteID: 6f75c1700c0734f4bbf138f24ee6257c
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: option_Logo_5
+      name: option_Logo_7
       rect:
         serializedVersion: 2
         x: 37
@@ -217,37 +259,17 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e14d5d0cdd2c2bb45a5d773c2dce6c5c
+      spriteID: b1e3ae60efedc2f4787d040b21faf718
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: option_Logo_6
+      name: option_Logo_8
       rect:
         serializedVersion: 2
         x: 37
         y: 9
-        width: 31
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 42e3dad71d3290a4e8246fe443088736
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: option_Logo_7
-      rect:
-        serializedVersion: 2
-        x: 37
-        y: 0
         width: 37
         height: 7
       alignment: 0
@@ -257,7 +279,27 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f7b0d81c573ab5a4398f7da086070da0
+      spriteID: 559d042bca86d294d8db97ae9409b8ce
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: option_Logo_9
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 0
+        width: 31
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ee95ef059efc1a440aa93c80d3ad8233
       vertices: []
       indices: 
       edges: []
@@ -265,7 +307,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 21522dc76717f7345bf592d6f5ef06bf
+    spriteID: 90f8407037ad51a43802ddd25c119c89
     vertices: []
     indices: 
     edges: []
