@@ -14,6 +14,20 @@ public class Enemy_ctr : MonoBehaviour
 
     Animator anima;
 
+    Map_con mc;
+
+    void map_date()
+    {
+        GameObject GM = GameObject.Find("GameMaster");
+        mc = GM.GetComponent<Map_con>();
+
+        //マップ生成
+        mc.Create_map(0, 0);
+
+        mc.Create_map(0, 1);
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
