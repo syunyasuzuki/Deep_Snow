@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class FadeCon : MonoBehaviour
 {
-    public Image FadeImage1;
+    [SerializeField] Image FadeImage1;
 
     public static bool isFade1;
     public static bool isFadeOut1;
@@ -42,10 +42,11 @@ public class FadeCon : MonoBehaviour
 
     public void FadeIn1()
     {
-        alpha1 -= 0.02f;
+        alpha1 -= 2.0f * Time.deltaTime;
         FadeImage1.color = new Color(1.0f, 1.0f, 1.0f, alpha1);
         if (alpha1 <= 0.0f)
         {
+            FadeImage1.enabled = false;
             isFadeIn1 = false;
             isFade1 = false;
         }
@@ -53,12 +54,14 @@ public class FadeCon : MonoBehaviour
 
     public void FadeOut1()
     {
-        alpha1 += 0.02f;
+        FadeImage1.enabled = true;
+        alpha1 += 1.0f * Time.deltaTime;
         FadeImage1.color = new Color(1.0f, 1.0f, 1.0f, alpha1);
         if (alpha1 >= 1.0f)
         {
             isFadeOut1 = false;
             isFade1 = false;
+            SceneManager.LoadScene("GameScene");
         }
     }
 }

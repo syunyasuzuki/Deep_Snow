@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class TitleManager : MonoBehaviour
 {
@@ -61,6 +62,16 @@ public class TitleManager : MonoBehaviour
     {
         audio.Play();
         gamestart_check = true;
+    }
+
+    /// <summary>
+    /// １－１ボタンを押したらステージ１を呼び出す
+    /// </summary>
+    public void SelectStage1()
+    {
+        audio.Play();
+        FadeCon.isFade1 = true;
+        FadeCon.isFadeOut1 = true;
     }
 
     /// <summary>
