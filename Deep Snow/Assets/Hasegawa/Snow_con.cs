@@ -17,9 +17,7 @@ public class Snow_con : MonoBehaviour
     /// <summary>雲の大きさ</summary>
     const float CloudSize_x = 1.0f;
 
-    /// <summary>生成する雪</summary>
-    [SerializeField] GameObject ob_snow = null;
-    /// <summary>生成する雲</summary>
+    ///<summary>生成する雲</summary>
     [SerializeField] Sprite spr_cloud = null;
 
     ///<summary>ループ処理を止める</summary>
@@ -74,10 +72,10 @@ public class Snow_con : MonoBehaviour
         falled_snow = new GameObject[fed_snw * Sprit_falledsnow];
         for(int lu = 0; lu < fed_snw; ++lu){
             for(int na = 0; na < Sprit_falledsnow; ++na){
-                falled_snow[lu * Sprit_falledsnow + na] = Instantiate(ob_snow);
+                falled_snow[lu * Sprit_falledsnow + na] = GameObject.CreatePrimitive(PrimitiveType.Quad);
                 falled_snow[lu * Sprit_falledsnow + na].transform.parent = Master_falled_snow.transform;
                 float sub = 1.0f / Sprit_falledsnow;
-                falled_snow[lu * Sprit_falledsnow + na].transform.localScale = new Vector3(sub, sub, 0.0f);
+                falled_snow[lu * Sprit_falledsnow + na].transform.localScale = new Vector3(sub, 0.0f, 0.0f);
                 switch (fed_snw_num[lu]){
                     case 0:
                         falled_snow[lu * Sprit_falledsnow + na].transform.position = new Vector3(fed_snw_pos[lu].x - 0.5f + sub * na + sub / 2, fed_snw_pos[lu].y, 0.0f);
@@ -100,7 +98,7 @@ public class Snow_con : MonoBehaviour
         Cloud.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
         Master_fall_snow = new GameObject("fall_snows");
         for(int lu = 0; lu < Max_fallsnows; ++lu){
-            fall_snow[lu] = Instantiate(ob_snow);
+            fall_snow[lu] = GameObject.CreatePrimitive(PrimitiveType.Quad);
             fall_snow[lu].transform.position = new Vector3(-1.0f, 1.0f, 0.0f);
             fall_snow[lu].transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
             fall_snow[lu].transform.parent = Master_fall_snow.transform;

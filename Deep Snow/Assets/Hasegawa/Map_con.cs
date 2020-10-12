@@ -12,7 +12,7 @@ public class Map_con : MonoBehaviour
 
     //ワールドの数
     /// <summary>ワールドの数</summary>
-    const int World_num = 5;
+    const int World_num = 1;
     /// <summary>一つのワールドのステージ数</summary>
     const int Stage_num = 10;
     //----------ファイル関係--------------------
@@ -20,7 +20,7 @@ public class Map_con : MonoBehaviour
     string[] FilePath = null;
     /// <summary>ファイルのパスを設定</summary>
     void Set_path(){
-        FilePath = new string[World_num] { "World1", "World2", "World3", "World4", "World5" };
+        FilePath = new string[World_num] { "mapdata" };
     }
     //----------マップ関係--------------------
     //マップサイズ
@@ -43,7 +43,7 @@ public class Map_con : MonoBehaviour
             string[] text_line = text_data.Split('\n');
             for (int s = 0; s < Stage_num; ++s){
                 for(int y = 0; y < Mapsize_y; ++y){
-                    string[] strsplr = text_line[y].Split(',');
+                    string[] strsplr = text_line[Mapsize_y * s + y + 1].Split(',');
                     for(int x = 0; x < Mapsize_x; ++x){
                         map[w, s, y, x] = int.Parse(strsplr[x]);
                     }
@@ -58,8 +58,8 @@ public class Map_con : MonoBehaviour
     [SerializeField] Sprite[] Falled_block = new Sprite[4];
     /// <summary>各マップチップの素材</summary>
     [SerializeField] Sprite[] Blocks = new Sprite[11];
-    /// <summary>壊れる床の素材</summary>
-    [SerializeField] Sprite[] Broken_ice = new Sprite[8];
+    ///<summary>各プレハブ</summary>
+    [SerializeField] GameObject[] Gos = new GameObject[3];
     /// <summary>マップチップを入れる親オブジェクト</summary>
     GameObject Map_mother = null;
     ///<summary>一回でもマップを生成したか</summary>
@@ -70,54 +70,9 @@ public class Map_con : MonoBehaviour
     int now_stage = 0;
     /// <summary>現在使っているマップ</summary>
     int[,] now_map = new int[Mapsize_y, Mapsize_x];
-    ///<summary>現在使っているマップの</summary>
+    ///<summary>現在使っているマップの指定されたマップ情報を返す</summary>
     public int Read_mapchip(int x,int y){
         return now_map[y, x];
-    }
-    ///<summary>現在使っている壊れる床の数</summary>
-    int br_num = 0;
-    ///<summary>現在使っている壊れる床の位置</summary>
-    Vector3[] br_pos;
-    ///<summary>各壊れる床のスプライト</summary>
-    SpriteRenderer[] br_blocks;
-    ///<summary>各壊れる床の状態（0 = 生成された状態 , 1 = 壊れてる , 2 = 壊れた）</summary>
-    int[] br_mode;
-    ///<summary>各壊れる床のスプライト番号</summary>
-    int[] spr_count;
-    ///<summary>各壊れる床のアニメーションカウント</summary>
-    int[] br_count;
-    ///<summary>壊れる床の数を返す</summary>
-    public int Read_br(){
-        return br_num;
-    }
-    ///<summary>指定された壊れる床の位置を返す</summary>
-    public Vector3 Read_br_pos(int x){
-        return br_pos[x];
-    }
-    ///<summary>
-    ///壊れる床のアニメーションを有効にする
-    ///現在使っているマップ情報も書き換える
-    /// </summary>
-    public void Set_br_animation(int x){
-        br_mode[x] = 1;
-        map[now_world, now_stage, (int)-br_pos[x].y, (int)br_pos[x].x] = 0;
-    }
-    ///<summary>壊れる床の処理</summary>
-    void Br_blocks_task(){
-        for(int lu = 0; lu < br_num; ++lu){
-            if (br_mode[lu] == 1){
-                if (++br_count[lu] >= 4){
-                    br_count[lu] = 0;
-                    if (++spr_count[lu] >= 8){
-                        br_blocks[lu] = null;
-                        br_mode[lu] = 2;
-                    }
-                    else{
-                        br_blocks[lu].sprite = Broken_ice[spr_count[lu]];
-                    }
-                }
-            }
-        }
     }
     ///<summary>現在使っているマップの棘の数</summary>
     int spike_num = 0;
@@ -149,7 +104,6 @@ public class Map_con : MonoBehaviour
     public int Read_fed_snw_num(int x){
         return fed_snw_num[x];
     }
-
     ///<summary>積もる雪の数、雪の位置を割り出す</summary>
     void Sarch_fed_snw(int w,int s){
         fed_snw = 0;
@@ -157,8 +111,13 @@ public class Map_con : MonoBehaviour
             for(int lu = 0; lu < Mapsize_x; ++lu){
                 if (map[w, s, lu, na] != 0 && map[w,s,lu,na] != 10){
                     if (lu - 1 >= 0){
-                        if (map[w, s, lu - 1, na] == 0 || (map[w, s, lu - 1, na] >= 3 && map[w, s, lu - 1, na] <= 6) || map[w, s, lu - 1, na] == 10){
-                            fed_snw_pos[fed_snw] = new Vector3(na, -lu + 1 - 0.5f, 0.0f);
+                        if (map[w, s, lu - 1, na] == 0 || (map[w, s, lu - 1, na] >= 3 && map[w, s, lu - 1, na] <= 6) || (map[w, s, lu - 1, na] >= 10 && map[w, s, lu - 1, na] <= 13)){
+                            if (map[w, s, lu, na] >= 10 && map[w, s, lu, na] <= 13){
+                                fed_snw_pos[fed_snw] = new Vector3(na, -lu - 0.5f, 0.0f);
+                            }
+                            else{
+                                fed_snw_pos[fed_snw] = new Vector3(na, -lu + 1 - 0.5f, 0.0f);
+                            }
                             fed_snw_num[fed_snw] = map[w, s, lu - 1, na];
                             ++fed_snw;
                             break;
@@ -195,12 +154,19 @@ public class Map_con : MonoBehaviour
                 ++spike_num;
                 break;
             case 11:
-                GameObject br = new GameObject("br_bl_" + br_num);
-                br.AddComponent<SpriteRenderer>().sprite = Broken_ice[0];
-                br.transform.position = new Vector3(x, -y, 0.0f);
-                br.transform.parent = Map_mother.transform;
-                br_pos[br_num] = new Vector3(x, -y, 0.0f);
-                ++br_num;
+                //敵
+                GameObject enemy = Instantiate(Gos[0]);
+                enemy.transform.position = new Vector3(x, -y, 0.0f);
+                break;
+            case 12:
+                //ゴール
+                GameObject goal = Instantiate(Gos[1]);
+                goal.transform.position = new Vector3(x, -y, 0.0f);
+                break;
+            case 13:
+                //プレイヤー
+                GameObject player = Instantiate(Gos[2]);
+                player.transform.position = new Vector3(x, -y, 0.0f);
                 break;
             default:
                 GameObject bl = new GameObject("bl " + x + " - " + y);
@@ -220,7 +186,6 @@ public class Map_con : MonoBehaviour
             snc.Destroy_allsnow();
         }
         Map_mother = new GameObject("map_mother");
-        br_num = 0;
         spike_num = 0;
         for (int lu = 0; lu < Mapsize_y; ++lu){
             for (int na = 0; na < Mapsize_x; ++na){
