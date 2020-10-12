@@ -6,7 +6,7 @@ public class Enemy_ctr : MonoBehaviour
 {
     float move_x;
     float pos_y;
-    float stay_time;
+    float pos_x;
 
     bool move_invert;
 
@@ -23,12 +23,13 @@ public class Enemy_ctr : MonoBehaviour
 
         now_pos = transform.position;
         pos_y = now_pos.y;
+        pos_x = now_pos.x;
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = new Vector3(move_x, pos_y, 0.0f);
+        transform.position = new Vector3(pos_x + move_x, pos_y, 0.0f);
         
         if(move_invert == true)
         {
