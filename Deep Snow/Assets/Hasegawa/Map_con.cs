@@ -92,10 +92,6 @@ public class Map_con : MonoBehaviour
     Vector3[] fed_snw_pos = new Vector3[500];
     ///<summary>積もる位置の雪の番号</summary>
     int[] fed_snw_num = new int[500];
-    ///<summary>積もる雪の数を返す</summary>
-    public int Read_fed_snw(){
-        return fed_snw;
-    }
     ///<summary>積もる雪の位置を返す</summary>
     public Vector3 Read_fed_snw_pos(int x){
         return fed_snw_pos[x];
@@ -107,18 +103,20 @@ public class Map_con : MonoBehaviour
     ///<summary>積もる雪の数、雪の位置を割り出す</summary>
     void Sarch_fed_snw(int w,int s){
         fed_snw = 0;
-        for(int na = 0; na < Mapsize_y; ++na){
-            for(int lu = 0; lu < Mapsize_x; ++lu){
-                if (map[w, s, lu, na] != 0 && map[w,s,lu,na] != 10){
+        for(int na = 0; na < Mapsize_x; ++na){
+            for(int lu = 0; lu < Mapsize_y; ++lu){
+                if (map[w, s, lu, na] != 0){
                     if (lu - 1 >= 0){
-                        if (map[w, s, lu - 1, na] == 0 || (map[w, s, lu - 1, na] >= 3 && map[w, s, lu - 1, na] <= 6) || (map[w, s, lu - 1, na] >= 10 && map[w, s, lu - 1, na] <= 13)){
-                            if (map[w, s, lu, na] >= 10 && map[w, s, lu, na] <= 13){
+                        if (map[w, s, lu - 1, na] == 0 || map[w, s, lu - 1, na] == 10){
+                            if (map[w, s, lu, na] == 10 || (map[w, s, lu, na] >= 3 && map[w, s, lu, na] <= 6) || map[w, s, lu, na] == 11 || map[w, s, lu, na] == 12 || map[w, s, lu, na] == 13)
+                            {
                                 fed_snw_pos[fed_snw] = new Vector3(na, -lu - 0.5f, 0.0f);
+                                fed_snw_num[fed_snw] = map[w, s, lu, na];
                             }
                             else{
                                 fed_snw_pos[fed_snw] = new Vector3(na, -lu + 1 - 0.5f, 0.0f);
+                                fed_snw_num[fed_snw] = map[w, s, lu - 1, na];
                             }
-                            fed_snw_num[fed_snw] = map[w, s, lu - 1, na];
                             ++fed_snw;
                             break;
                         }
@@ -131,6 +129,8 @@ public class Map_con : MonoBehaviour
     /// <param name="n">生成するオブジェクトの番号</param>
     public void Create_chip(int x, int y, int n){
         switch (n){
+            case 0:
+                break;
             case 1:
                 int rnd = Random.Range(0, 2);
                 GameObject n_bl = new GameObject("nb_bl " + x + " - " + y);
@@ -157,16 +157,19 @@ public class Map_con : MonoBehaviour
                 //敵
                 GameObject enemy = Instantiate(Gos[0]);
                 enemy.transform.position = new Vector3(x, -y, 0.0f);
+                enemy.transform.parent = Map_mother.transform;
                 break;
             case 12:
                 //ゴール
                 GameObject goal = Instantiate(Gos[1]);
                 goal.transform.position = new Vector3(x, -y, 0.0f);
+                goal.transform.parent = Map_mother.transform;
                 break;
             case 13:
                 //プレイヤー
                 GameObject player = Instantiate(Gos[2]);
                 player.transform.position = new Vector3(x, -y, 0.0f);
+                player.transform.parent = Map_mother.transform;
                 break;
             default:
                 GameObject bl = new GameObject("bl " + x + " - " + y);
