@@ -199,6 +199,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edc5009c89a65944187795e3da632872, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sound1: {fileID: 8300000, guid: 182f8660db2905b4c9ffb9ea7c7a81cc, type: 3}
+  sound2: {fileID: 8300000, guid: fb1f00210d6483e469dce5d31da5cbc5, type: 3}
 --- !u!95 &679287623
 Animator:
   serializedVersion: 3
@@ -320,6 +322,21 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 82235640221451156, guid: 9735802c83bbcc14caff54ce234be5bf,
+        type: 3}
+      propertyPath: m_PlayOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 82235640221451156, guid: 9735802c83bbcc14caff54ce234be5bf,
+        type: 3}
+      propertyPath: Mute
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 82235640221451156, guid: 9735802c83bbcc14caff54ce234be5bf,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 182f8660db2905b4c9ffb9ea7c7a81cc, type: 3}
     - target: {fileID: 1542929761875941222, guid: 9735802c83bbcc14caff54ce234be5bf,
         type: 3}
       propertyPath: m_Name
@@ -385,5 +402,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 114614961285248028, guid: 9735802c83bbcc14caff54ce234be5bf, type: 3}
+    - {fileID: 114005839209112870, guid: 9735802c83bbcc14caff54ce234be5bf, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 9735802c83bbcc14caff54ce234be5bf, type: 3}
