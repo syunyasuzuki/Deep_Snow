@@ -7,6 +7,15 @@ public class Demo_player2 : MonoBehaviour
 
     const int Mapsize_x = 10;
     const int Mapsize_y = 6;
+
+    Map_con master;
+    Snow_con snow;
+    void Set_master()
+    {
+        master = GameObject.Find("GameMaster").GetComponent<Map_con>();
+        snow = GameObject.Find("GameMaster").GetComponent<Snow_con>();
+    }
+
     public GameObject player;//Player
     bool Abilityswitch = true;//能力onの判定
     Animator animator;   
@@ -41,11 +50,11 @@ public class Demo_player2 : MonoBehaviour
             }
         }
     }
-    int Read_chip(int x, int y)
-    {
-        if (x < 0 || x >= Mapsize_x || y < 0 || y >= Mapsize_y) { return 1; }
-        return mapdata[y, x];
-    }
+    //int Read_chip(int x, int y)
+    //{
+    //    if (x < 0 || x >= Mapsize_x || y < 0 || y >= Mapsize_y) { return 1; }
+    //    return mapdata[y, x];
+    //}
     const int spike_num2 = 3;
     public int Read_spike()
     {
@@ -118,7 +127,7 @@ public class Demo_player2 : MonoBehaviour
         player.transform.localScale = Player_size;
         player.transform.position = Player_pos;
         int n_x = Mathf.FloorToInt(Player_pos.x + 0.5f), n_y = Mathf.FloorToInt(Player_pos.y + 0.5f);
-        int down = Read_chip(n_x, -n_y + 1);
+        int down = master.Read_mapchip(n_x, -n_y + 1);
         if (down == 1)
         {
             jump_set = false;
@@ -147,9 +156,9 @@ public class Demo_player2 : MonoBehaviour
             case 0:
                 //落下処理
                 ++fall_count;
-                int down = Read_chip(n_x, -n_y + 1);
-                int down_right = Read_chip(n_x + 1, -n_y + 1);
-                int down_left = Read_chip(n_x - 1, -n_y + 1);
+                int down = master.Read_mapchip(n_x, -n_y + 1);
+                int down_right = master.Read_mapchip(n_x + 1, -n_y + 1);
+                int down_left = master.Read_mapchip(n_x - 1, -n_y + 1);
                 if (down == 1)
                 {
                     if (now_p.y - herf_y - Fall_spd * fall_count / 2 > n_y - 0.5f)
@@ -203,9 +212,9 @@ public class Demo_player2 : MonoBehaviour
             case 1:
                 //ジャンプ処理
                 ++jump_count;
-                int up = Read_chip(n_x, -n_y - 1);
-                int up_right = Read_chip(n_x + 1, -n_y - 1);
-                int up_left = Read_chip(n_x - 1, -n_y - 1);
+                int up = master.Read_mapchip(n_x, -n_y - 1);
+                int up_right = master.Read_mapchip(n_x + 1, -n_y - 1);
+                int up_left = master.Read_mapchip(n_x - 1, -n_y - 1);
                 if (up == 1)
                 {                    
                     if (now_p.y + herf_y + Jump_spd < n_y + 0.5f)
@@ -272,7 +281,7 @@ public class Demo_player2 : MonoBehaviour
 
         if (m_x != 0)
         {            
-            int side = Read_chip(n_x + side_s, -n_y);
+            int side = master.Read_mapchip(n_x + side_s, -n_y);
             if (side == 1)
             {
                 if ((side_s == 1 && now_p.x + (herf_y + Move_spd) * side_s < n_x + 0.5f * side_s) || 
@@ -309,7 +318,8 @@ public class Demo_player2 : MonoBehaviour
     void Start()
     {
         Set_camera();
-        Set_map();
+        //Set_map();
+        Set_master();
         Set_player();
         animator =  GetComponent<Animator>();
       
