@@ -47,28 +47,26 @@ public class Enemy_ctr : MonoBehaviour
         
         if(move_invert == true)
         {
-            move_x -= 1.0f * Time.deltaTime;
+            move_x -= 1.0f * Time.deltaTime;  //敵の移動速度
 
             anima.SetTrigger("Enemy_Walk_Trigger");
 
-            //敵の向きを反転
-            transform.rotation = new Quaternion(0.0f, 180.0f, 0.0f, 0.0f);
+            transform.rotation = new Quaternion(0.0f, 180.0f, 0.0f, 0.0f);   //敵の向きを反転
 
-            if(move_x <= -3.0f)
+            if (move_x <= -3.0f)
             {
                 move_invert = false;
             }
         }
         else
         {
-            move_x += 1.0f * Time.deltaTime;
+            move_x += 1.0f * Time.deltaTime;  //敵の移動速度
 
             anima.SetTrigger("Enemy_Walk_Trigger");
 
-            //敵の向きを反転
-            transform.rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
+            transform.rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);   //敵の向きを反転
 
-            if(move_x >= 3.0f)
+            if (move_x >= 3.0f)
             {
                 move_invert = true;
             }

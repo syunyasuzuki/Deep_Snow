@@ -28,6 +28,8 @@ public class TitleManager : MonoBehaviour
     float alpha;   //タイトルロゴとスタートボタンのα値を変える変数
     float alpha2;  //ステージセレクトボタンのα値を変える変数
 
+    Map_con mc;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -103,4 +105,14 @@ public class TitleManager : MonoBehaviour
         select_2.color = new Color(1.0f, 1.0f, 1.0f, alpha2);
         select_3.color = new Color(1.0f, 1.0f, 1.0f, alpha2);
     }
+
+    void map_date()
+    {
+        GameObject GM = GameObject.Find("GameMaster");
+        mc = GM.GetComponent<Map_con>();
+
+        //マップ生成
+        mc.Create_map(0, 0);
+    }
+
 }
