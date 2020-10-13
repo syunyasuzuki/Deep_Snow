@@ -49,7 +49,9 @@ public class Enemy_ctr : MonoBehaviour
         {
             move_x -= 1.0f * Time.deltaTime;
 
-            anima.SetTrigger("Enemy_Walk_Trigger");     
+            anima.SetTrigger("Enemy_Walk_Trigger");
+
+            //敵の向きを反転
             transform.rotation = new Quaternion(0.0f, 180.0f, 0.0f, 0.0f);
 
             if(move_x <= -3.0f)
@@ -62,6 +64,8 @@ public class Enemy_ctr : MonoBehaviour
             move_x += 1.0f * Time.deltaTime;
 
             anima.SetTrigger("Enemy_Walk_Trigger");
+
+            //敵の向きを反転
             transform.rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
 
             if(move_x >= 3.0f)

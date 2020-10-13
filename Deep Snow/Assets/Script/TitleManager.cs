@@ -6,23 +6,27 @@ using UnityEngine.SceneManagement;
 
 public class TitleManager : MonoBehaviour
 {
+    //--------タイトルロゴとスタートボタンのイメージを入れる変数----------
     [SerializeField] Image title_logo;
     [SerializeField] Image start_Button;
+    //---------------------------------------------------------------
 
+    //-----------ステージセレクトボタンのイメージを入れる変数------------
     [SerializeField] Image select_1;
     [SerializeField] Image select_2;
     [SerializeField] Image select_3;
+    //---------------------------------------------------------------
 
-    [SerializeField] AudioClip start_se;
-    [SerializeField] AudioClip select_se;
+    [SerializeField] AudioClip start_se;　　//スタートボタンを押したら鳴らすSE
+    [SerializeField] AudioClip select_se;   //ステージセレクトボタンを押したら鳴らすSE
 
     AudioSource audio;
 
-    bool gamestart_check;
-    bool select_check;
+    bool gamestart_check;  //スタートボタンが押されたかどうかを判定する変数
+    bool select_check;     //ステージセレクトボタンが押されたかどうかを判定する変数
 
-    float alpha;
-    float alpha2;
+    float alpha;   //タイトルロゴとスタートボタンのα値を変える変数
+    float alpha2;  //ステージセレクトボタンのα値を変える変数
 
     // Start is called before the first frame update
     void Start()
