@@ -16,11 +16,15 @@ public class GameManager : MonoBehaviour
 
     string now_scene;
 
+    Map_con mc;
+
     // Start is called before the first frame update
     void Start()
     {
         menu.SetActive(false);
         fade.FadeIn(0.0f);
+        Map_deta();
+
         now_scene = SceneManager.GetActiveScene().name;
     }
 
@@ -29,6 +33,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
+
             menu.SetActive(true);
             fade.FadeOut(1.0f);
         }
@@ -49,5 +54,15 @@ public class GameManager : MonoBehaviour
         fade.FadeIn(1.0f ,()=> {
             menu.SetActive(false);
         });
+    }
+
+    void Map_deta()
+    {
+        GameObject GM = GameObject.Find("GameMaster");
+
+        mc = GM.GetComponent<Map_con>();
+
+        //マップ生成
+        mc.Create_map(0, 2);
     }
 }

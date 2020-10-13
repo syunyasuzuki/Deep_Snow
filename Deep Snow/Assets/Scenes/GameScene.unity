@@ -580,6 +580,12 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameMaster
       objectReference: {fileID: 0}
+    - target: {fileID: 1775510643928623751, guid: db467ef7262890342b5879a864434376,
+        type: 3}
+      propertyPath: Gos.Array.data[0]
+      value: 
+      objectReference: {fileID: 5006164384698494900, guid: 7bde62bf417e16540b86e68e78ae034c,
+        type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: db467ef7262890342b5879a864434376, type: 3}
 --- !u!1 &711863203

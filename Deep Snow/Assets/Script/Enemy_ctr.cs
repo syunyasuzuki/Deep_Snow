@@ -53,7 +53,7 @@ public class Enemy_ctr : MonoBehaviour
 
             transform.rotation = new Quaternion(0.0f, 180.0f, 0.0f, 0.0f);   //敵の向きを反転
 
-            if (move_x <= -3.0f)
+            if (move_x <= -1.5f)
             {
                 move_invert = false;
             }
@@ -66,7 +66,7 @@ public class Enemy_ctr : MonoBehaviour
 
             transform.rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);   //敵の向きを反転
 
-            if (move_x >= 3.0f)
+            if (move_x >= 1.5f)
             {
                 move_invert = true;
             }

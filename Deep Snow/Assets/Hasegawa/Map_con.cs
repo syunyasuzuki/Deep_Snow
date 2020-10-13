@@ -213,7 +213,7 @@ public class Map_con : MonoBehaviour
 
     // Update is called once per frame
     void Update(){
-        Debug_mode();
+        //Debug_mode();
     }
 
     /// <summary>デバッグ用（あとで消す！！！）</summary>
