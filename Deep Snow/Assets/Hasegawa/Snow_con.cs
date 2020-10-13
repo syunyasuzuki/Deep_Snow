@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using UnityEditor;
 using UnityEngine;
 
 public class Snow_con : MonoBehaviour
@@ -43,9 +44,9 @@ public class Snow_con : MonoBehaviour
 
     //マップの大きさ
     /// <summary>マップの大きさ　X</summary>
-    private int map_size_x = 32;
+    const int map_size_x = 32;
     /// <summary>マップの大きさ　Y</summary>
-    private int map_size_y = 18;
+    const int map_size_y = 18;
     ///<summary>積もる雪を置く位置</summary>
     int[,] snw_pos = new int[4, Split_falledsnow]{
         {25,25,24,23,22,20,19,19,17,17,16,15,14,13,12,11,10,9,8,6,6,5,4,2,1 },
@@ -57,6 +58,20 @@ public class Snow_con : MonoBehaviour
     int fed_snw;
     ///<summary>積もる雪の位置</summary>
     Vector3[] fed_snw_pos;
+    ///<summary>ブロックに分けたときの積もった雪の最小値</summary>
+    float[] falled_min = new float[map_size_x];
+    ///<summary>最小値を求める</summary>
+    void Falled_min_task(){
+        for(int lu = 0; lu < map_size_x; ++lu){
+            float min = 0.0f;
+            for(int na = 0; na < Split_falledsnow; ++na){
+                min = falled_snow[lu * Split_falledsnow + na].transform.localScale.y > min ? falled_snow[lu * Split_falledsnow + na].transform.localScale.y : min;
+            }
+        }
+    }
+    public float Read_falled_min(int x){
+        return falled_min[x];
+    }
     /// <summary>マップから必要なデータをもらう</summary>
     void Set_Map_con(){
         Map_ob = GetComponent<Map_con>();
@@ -174,7 +189,7 @@ public class Snow_con : MonoBehaviour
     void Start_fall_snows(){
         Vector3 c_pos = Cloud.transform.position;
         for(int lu = 0; lu < Max_fallsnows; ++lu){
-            if (fall_mode[lu] != 1){
+            if (fall_mode[lu] == 0){
                 fall_snow[lu].transform.position = new Vector3(c_pos.x + Random.Range(-CloudSize_x, CloudSize_x), c_pos.y, 0.0f);
                 fall_mode[lu] = 1;
             }
@@ -230,6 +245,7 @@ public class Snow_con : MonoBehaviour
     void Update(){
         if (snow_task){
             Fallsnows_task();
+            Falled_min_task();
             Move_clouds_task();
         }
     }
