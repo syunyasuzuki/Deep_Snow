@@ -204,8 +204,8 @@ RectTransform:
   m_Children:
   - {fileID: 579331196}
   - {fileID: 1066189742}
-  - {fileID: 884071727}
   - {fileID: 630426956}
+  - {fileID: 884071727}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -320,7 +320,7 @@ RectTransform:
   - {fileID: 804136086}
   - {fileID: 2049942714}
   m_Father: {fileID: 154979606}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -475,6 +475,7 @@ GameObject:
   - component: {fileID: 751368580}
   - component: {fileID: 751368579}
   - component: {fileID: 751368581}
+  - component: {fileID: 751368582}
   m_Layer: 0
   m_Name: TitleManager
   m_TagString: Untagged
@@ -611,6 +612,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &751368582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 751368578}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0604f8264ea3d4b4ca876d464afa4b8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FadeImage1: {fileID: 884071728}
 --- !u!1 &804136085
 GameObject:
   m_ObjectHideFlags: 0
@@ -741,7 +755,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &884071727
 RectTransform:
   m_ObjectHideFlags: 0
@@ -754,7 +768,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 154979606}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1063,7 +1077,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1592080436}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 751368579}
+        m_MethodName: SelectStage1
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!222 &1592080435
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1110,6 +1135,8 @@ GameObject:
   - component: {fileID: 1919259343}
   - component: {fileID: 1919259342}
   - component: {fileID: 1919259341}
+  - component: {fileID: 1919259345}
+  - component: {fileID: 1919259344}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1151,7 +1178,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 5
+  orthographic size: 9
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1181,6 +1208,48 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1919259344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919259340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ba3800cd431c4e62a9a5a94d84f1902, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CamTransform: {fileID: 1919259343}
+  CameraSpeedMultiplier: 1
+  Color: {r: 0.8679245, g: 0.8679245, b: 0.8679245, a: 1}
+  Noise: {fileID: 2800000, guid: 524f825a31a4bf04db832318ea10c982, type: 3}
+  Size: 0.2
+  HorizontalSpeed: 0.02
+  VerticalSpeed: 0
+  Density: 0.25
+  Shader: {fileID: 4800000, guid: 8616dcd1c493e4f5c82258f262d88257, type: 3}
+--- !u!114 &1919259345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1919259340}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7ba3800cd431c4e62a9a5a94d84f1902, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CamTransform: {fileID: 1919259343}
+  CameraSpeedMultiplier: 1
+  Color: {r: 0.735849, g: 0.735849, b: 0.735849, a: 1}
+  Noise: {fileID: 2800000, guid: 524f825a31a4bf04db832318ea10c982, type: 3}
+  Size: 0.1
+  HorizontalSpeed: 0.01
+  VerticalSpeed: 0
+  Density: 0.1
+  Shader: {fileID: 4800000, guid: 8616dcd1c493e4f5c82258f262d88257, type: 3}
 --- !u!1 &2049942710
 GameObject:
   m_ObjectHideFlags: 0

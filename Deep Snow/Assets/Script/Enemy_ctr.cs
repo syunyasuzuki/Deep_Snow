@@ -14,6 +14,20 @@ public class Enemy_ctr : MonoBehaviour
 
     Animator anima;
 
+    Map_con mc;
+
+    void map_date()
+    {
+        GameObject GM = GameObject.Find("GameMaster");
+        mc = GM.GetComponent<Map_con>();
+
+        //マップ生成
+        mc.Create_map(0, 0);
+
+        mc.Create_map(0, 1);
+    }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,7 +49,9 @@ public class Enemy_ctr : MonoBehaviour
         {
             move_x -= 1.0f * Time.deltaTime;
 
-            anima.SetTrigger("Enemy_Walk_Trigger");     
+            anima.SetTrigger("Enemy_Walk_Trigger");
+
+            //敵の向きを反転
             transform.rotation = new Quaternion(0.0f, 180.0f, 0.0f, 0.0f);
 
             if(move_x <= -3.0f)
@@ -48,6 +64,8 @@ public class Enemy_ctr : MonoBehaviour
             move_x += 1.0f * Time.deltaTime;
 
             anima.SetTrigger("Enemy_Walk_Trigger");
+
+            //敵の向きを反転
             transform.rotation = new Quaternion(0.0f, 0.0f, 0.0f, 0.0f);
 
             if(move_x >= 3.0f)
