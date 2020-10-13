@@ -72,6 +72,7 @@ public class Map_con : MonoBehaviour
     int[,] now_map = new int[Mapsize_y, Mapsize_x];
     ///<summary>現在使っているマップの指定されたマップ情報を返す</summary>
     public int Read_mapchip(int x,int y){
+        if (x < 0 || x > Mapsize_x || y < 0 || y > Mapsize_y) { return 1; }
         return now_map[y, x];
     }
     ///<summary>現在使っているマップの棘の数</summary>
