@@ -99,3 +99,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spr_cloud: {fileID: 21300000, guid: a0e3aef86f1655c4f8e89ff2b6a67d9b, type: 3}
+  spr_snow: {fileID: 21300000, guid: 10ded95cf2d32a54a88fa1f0b24901d4, type: 3}
+  spr_f_snw: {fileID: 21300008, guid: 6815a22a126e37d4bb3ef5ef439b7abe, type: 3}
