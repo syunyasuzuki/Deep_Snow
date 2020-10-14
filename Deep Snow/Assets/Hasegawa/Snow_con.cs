@@ -111,12 +111,13 @@ public class Snow_con : MonoBehaviour
     void Set_fallsnows(){
         Cloud = new GameObject("cloud");
         Cloud.AddComponent<SpriteRenderer>().sprite = spr_cloud;
-        Cloud.GetComponent<SpriteRenderer>().sortingOrder = 1;
+        Cloud.GetComponent<SpriteRenderer>().sortingOrder = 100;
         Cloud.transform.position = new Vector3(0.0f, 0.0f, 0.0f);
         Master_fall_snow = new GameObject("fall_snows");
         for(int lu = 0; lu < Max_fallsnows; ++lu){
             fall_snow[lu] = new GameObject("snowflake");
             fall_snow[lu].AddComponent<SpriteRenderer>().sprite = spr_snow;
+            fall_snow[lu].GetComponent<SpriteRenderer>().sortingOrder = 99;
             fall_snow[lu].transform.position = new Vector3(-1.0f, 1.0f, 0.0f);
             fall_snow[lu].transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
             fall_snow[lu].transform.parent = Master_fall_snow.transform;

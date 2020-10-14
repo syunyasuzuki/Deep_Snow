@@ -5,7 +5,7 @@ using UnityEngine;
 public class Map_con : MonoBehaviour
 {
     /////<summary></summary>
-    
+
     //テスト用(後で消す)
     [SerializeField] int test_loadworld = 0;
     [SerializeField] int test_loadstage = 0;
@@ -19,7 +19,7 @@ public class Map_con : MonoBehaviour
     /// <summary>ファイルのパス（アクセスはResourcesフォルダーから）</summary>
     string[] FilePath = null;
     /// <summary>ファイルのパスを設定</summary>
-    void Set_path(){
+    void Set_path() {
         FilePath = new string[World_num] { "mapdata" };
     }
     //----------マップ関係--------------------
@@ -29,7 +29,7 @@ public class Map_con : MonoBehaviour
     /// <summary>マップサイズ　Y</summary>
     const int Mapsize_y = 18;
     /// <summary>マップの大きさを返す</summary>
-    public void Read_mapsize(ref int x,ref int y){
+    public void Read_mapsize(ref int x, ref int y) {
         x = Mapsize_x;
         y = Mapsize_y;
     }
@@ -37,14 +37,14 @@ public class Map_con : MonoBehaviour
     int[,,,] map = new int[World_num, Stage_num, Mapsize_y, Mapsize_x];
 
     /// <summary>一括で全ステージを読み込む（データがリソースファイルにある前提）</summary>
-    void Read_all_maps(){
-        for (int w = 0; w < World_num; ++w){
+    void Read_all_maps() {
+        for (int w = 0; w < World_num; ++w) {
             string text_data = (Resources.Load(FilePath[w], typeof(TextAsset)) as TextAsset).text;
             string[] text_line = text_data.Split('\n');
-            for (int s = 0; s < Stage_num; ++s){
-                for(int y = 0; y < Mapsize_y; ++y){
+            for (int s = 0; s < Stage_num; ++s) {
+                for (int y = 0; y < Mapsize_y; ++y) {
                     string[] strsplr = text_line[Mapsize_y * s + y + 1].Split(',');
-                    for(int x = 0; x < Mapsize_x; ++x){
+                    for (int x = 0; x < Mapsize_x; ++x) {
                         map[w, s, y, x] = int.Parse(strsplr[x]);
                     }
                 }
@@ -69,7 +69,26 @@ public class Map_con : MonoBehaviour
     ///<summary>現在使っているステージ番号</summary>
     int now_stage = 0;
     /// <summary>現在使っているマップ</summary>
-    int[,] now_map = new int[Mapsize_y, Mapsize_x];
+    int[,] now_map = new int[Mapsize_y, Mapsize_x]{
+        { 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0 },
+{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{ 0,0,0,0,0,0,0,0,0,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{ 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+{ 13,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,11,0,0,0,0,0,0,0,0,0,0,0,0,0,0,12},
+{ 2,2,2,2,2,2,2,2,2,10,10,10,10,10,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2},
+{ 1,1,1,1,1,1,1,1,1,2,2,2,2,2,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+{ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+{ 1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
+    };
     ///<summary>現在使っているマップの指定されたマップ情報を返す</summary>
     public int Read_mapchip(int x,int y){
         return now_map[y, x];
@@ -192,7 +211,7 @@ public class Map_con : MonoBehaviour
         spike_num = 0;
         for (int lu = 0; lu < Mapsize_y; ++lu){
             for (int na = 0; na < Mapsize_x; ++na){
-                Create_chip(na, lu, now_map[lu,na] = map[w, s, lu, na]);
+                Create_chip(na, lu, now_map[lu,na]);
             }
         }
         Sarch_fed_snw(w, s);
